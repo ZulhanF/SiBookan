@@ -26,12 +26,32 @@ if (isset($_POST['login'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SiBookan</title>
+    <title>SiBookan - Sistem Booking Ruangan Gedung A10</title>
+    <meta name="description" content="SiBookan adalah sistem booking ruangan untuk Gedung A10. Dapatkan akses mudah untuk memesan ruangan secara online." />
+    <meta name="keywords" content="sibookan, booking ruangan, gedung a10, sistem booking, pemesanan ruangan" />
+    <meta name="author" content="SiBookan" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sibookan.my.id/" />
+    <meta property="og:title" content="SiBookan - Sistem Booking Ruangan Gedung A10" />
+    <meta property="og:description" content="SiBookan adalah sistem booking ruangan untuk Gedung A10. Dapatkan akses mudah untuk memesan ruangan secara online." />
+    <meta property="og:image" content="https://sibookan.my.id/logo.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://sibookan.my.id/" />
+    <meta property="twitter:title" content="SiBookan - Sistem Booking Ruangan Gedung A10" />
+    <meta property="twitter:description" content="SiBookan adalah sistem booking ruangan untuk Gedung A10. Dapatkan akses mudah untuk memesan ruangan secara online." />
+    <meta property="twitter:image" content="https://sibookan.my.id/logo.png" />
+
+    <link rel="canonical" href="https://sibookan.my.id/" />
     <link rel="shortcut icon" href="🏢" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -44,172 +64,224 @@ if (isset($_POST['login'])) {
 
         body {
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             background: linear-gradient(135deg, #1a3464, #3668c0);
-        }
-
-        .login-container {
-            background: white;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .login-header h1 {
-            color: #1e3c72;
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .login-header p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
             color: #333;
-            font-weight: 500;
         }
 
-        .form-group input {
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
             width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            top: 0;
+            z-index: 1000;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #1e3c72;
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
         }
 
-        .login-btn {
-            width: 100%;
-            padding: 0.8rem;
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3c72;
+            text-decoration: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .login-btn, .register-btn {
             background: #2a5298;
             color: white;
-            border: none;
+            padding: 0.8rem 1.5rem;
             border-radius: 5px;
-            font-size: 1rem;
+            text-decoration: none;
             font-weight: 500;
-            cursor: pointer;
             transition: background 0.3s ease;
         }
 
-        .login-btn:hover {
+        .login-btn:hover, .register-btn:hover {
             background: #1e3c72;
         }
 
-        .forgot-password {
+        .hero {
+            padding: 8rem 0 4rem;
             text-align: center;
-            margin-top: 1rem;
+            color: white;
         }
 
-        .forgot-password a {
-            color: #1e3c72;
-            text-decoration: none;
-            font-size: 0.9rem;
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
 
-        .forgot-password a:hover {
-            text-decoration: underline;
-        }
-
-        .error-message {
-            background-color: #fee2e2;
-            border: 1px solid #ef4444;
-            color: #dc2626;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        .error-message::before {
-            content: "⚠️";
+        .hero p {
             font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
         }
 
-        @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            25% {
-                transform: translateX(-5px);
-            }
-
-            75% {
-                transform: translateX(5px);
-            }
+        .features {
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #1a3464, #3668c0);
         }
 
-        .form-group.error input {
-            border-color: #dc2626;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card h3 {
+            color: #1e3c72;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .cta {
+            padding: 4rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: white;
+            color: #1e3c72;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: transform 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background: #1e3c72;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-content p {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <h1>SiBookan</h1>
-            <p>Sistem Booking Ruangan untuk Gedung A10</p>
+    <header>
+        <div class="header-content">
+            <a href="index.php" class="logo">SiBookan</a>
+            <div class="nav-buttons">
+                <a href="login.php" class="login-btn">Login</a>
+                <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B6281946728927&text=Min%2C+info+buat+akun+sibookan&type=phone_number&app_absent=0" class="register-btn">Register</a>
+            </div>
         </div>
-        <?php if (!empty($error_message)): ?>
-            <div class="error-message">
-                <?php echo htmlspecialchars($error_message); ?>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Selamat Datang di SiBookan</h1>
+            <p>Sistem booking ruangan modern untuk Gedung A10. Pesan ruangan dengan mudah, cepat, dan efisien.</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Booking Online 24/7</h3>
+                    <p>Pesan ruangan kapan saja dan di mana saja. Sistem kami tersedia 24 jam untuk memudahkan Anda.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Proses Cepat</h3>
+                    <p>Hanya butuh beberapa klik untuk memesan ruangan. Tidak perlu antri atau mengisi formulir manual.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Notifikasi Real-time</h3>
+                    <p>Dapatkan konfirmasi booking secara instan dan notifikasi pengingat sebelum waktu pemakaian.</p>
+                </div>
             </div>
-        <?php endif; ?>
-        <form action="index.php" method="post">
-            <div class="form-group <?php echo !empty($error_message) ? 'error' : ''; ?>">
-                <label for="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Masukkan username"
-                    required
-                    value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>" />
-            </div>
-            <div class="form-group <?php echo !empty($error_message) ? 'error' : ''; ?>">
-                <label for="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Masukkan password"
-                    required />
-            </div>
-            <button type="submit" name="login" class="login-btn">Sign In</button>
-            <div class="forgot-password">
-                <p>Belum punya akun?</p>
-                <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B6281946728927&text=Min%2C+info+buat+akun+sibookan&type=phone_number&app_absent=0">Hubungi Pengelola</a>
-            </div>
-        </form>
-    </div>
+        </div>
+        <section class="cta">
+        <div class="container">
+            <h2>Siap untuk Memulai?</h2>
+            <p>Bergabunglah dengan SiBookan sekarang dan nikmati kemudahan dalam memesan ruangan.</p>
+            <a href="login.php" class="cta-btn">Login Sekarang</a>
+        </div>
+    </section>
+    </section>
+
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 SiBookan. All rights reserved.</p>
+        </div>
+    </footer>
 </body>
 
 </html>
