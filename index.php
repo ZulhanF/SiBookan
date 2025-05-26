@@ -36,7 +36,7 @@ if (isset($_POST['login'])) {
     <meta name="keywords" content="sibookan, booking ruangan, gedung a10, sistem booking, pemesanan ruangan" />
     <meta name="author" content="SiBookan" />
     <meta name="robots" content="index, follow" />
-    
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://sibookan.my.id/" />
@@ -106,7 +106,8 @@ if (isset($_POST['login'])) {
             align-items: center;
         }
 
-        .login-btn, .register-btn {
+        .login-btn,
+        .register-btn {
             background: #2a5298;
             color: white;
             padding: 0.8rem 1.5rem;
@@ -116,7 +117,8 @@ if (isset($_POST['login'])) {
             transition: background 0.3s ease;
         }
 
-        .login-btn:hover, .register-btn:hover {
+        .login-btn:hover,
+        .register-btn:hover {
             background: #1e3c72;
         }
 
@@ -132,8 +134,8 @@ if (isset($_POST['login'])) {
         }
 
         .hero p {
-            font-size: 1.2rem;
-            max-width: 600px;
+            font-size: 1.5rem;
+            max-width: 800px;
             margin: 0 auto;
             opacity: 0.9;
         }
@@ -145,14 +147,14 @@ if (isset($_POST['login'])) {
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+            margin-top: 1rem;
         }
 
         .feature-card {
             background: #f8fafc;
-            padding: 2rem;
+            padding: 3rem;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
@@ -160,43 +162,18 @@ if (isset($_POST['login'])) {
         .feature-card h3 {
             color: #1e3c72;
             margin-bottom: 1rem;
+            font-size: 1.3rem;
         }
 
         .feature-card p {
-            color: #666;
+            color: black;
             line-height: 1.6;
+            font-size: 1rem;
         }
 
-        .cta {
-            padding: 4rem 0;
-            text-align: center;
-            color: white;
-        }
-
-        .cta h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .cta p {
-            max-width: 600px;
-            margin: 0 auto 2rem;
-            opacity: 0.9;
-        }
-
-        .cta-btn {
-            display: inline-block;
-            background: white;
-            color: #1e3c72;
-            padding: 1rem 2rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: transform 0.3s ease;
-        }
-
-        .cta-btn:hover {
-            transform: translateY(-2px);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            transition: transform 0.5s ease;
         }
 
         footer {
@@ -246,13 +223,17 @@ if (isset($_POST['login'])) {
     <section class="hero">
         <div class="container">
             <h1>Selamat Datang di SiBookan</h1>
-            <p>Sistem booking ruangan modern untuk Gedung A10. Pesan ruangan dengan mudah, cepat, dan efisien.</p>
+            <p>SiBookan adalah platform booking ruangan online yang dirancang khusus untuk Gedung A10 Universitas Negeri Surabaya (UNESA). Dengan antarmuka yang mudah digunakan, SiBookan membantu mahasiswa dan dosen melakukan reservasi ruangan secara cepat, efisien, dan tanpa ribet.</p>
         </div>
     </section>
 
     <section class="features">
         <div class="container">
             <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Pencarian Ruangan Berdasarkan Waktu</h3>
+                    <p>Cari ruangan yang tersedia sesuai kebutuhanmu. Atur tanggal dan jam, SiBookan akan menampilkan pilihan ruangan yang paling sesuai secara otomatis.</p>
+                </div>
                 <div class="feature-card">
                     <h3>Booking Online 24/7</h3>
                     <p>Pesan ruangan kapan saja dan di mana saja. Sistem kami tersedia 24 jam untuk memudahkan Anda.</p>
@@ -262,18 +243,11 @@ if (isset($_POST['login'])) {
                     <p>Hanya butuh beberapa klik untuk memesan ruangan. Tidak perlu antri atau mengisi formulir manual.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Notifikasi Real-time</h3>
-                    <p>Dapatkan konfirmasi booking secara instan dan notifikasi pengingat sebelum waktu pemakaian.</p>
+                    <h3> Proses Booking Real-Time dan Transparan</h3>
+                    <p>Cukup beberapa klik untuk memesan ruangan. Setiap pemesanan diproses secara real-time, sehingga tidak ada bentrok jadwal atau booking ganda.</p>
                 </div>
             </div>
         </div>
-        <section class="cta">
-        <div class="container">
-            <h2>Siap untuk Memulai?</h2>
-            <p>Bergabunglah dengan SiBookan sekarang dan nikmati kemudahan dalam memesan ruangan.</p>
-            <a href="login.php" class="cta-btn">Login Sekarang</a>
-        </div>
-    </section>
     </section>
 
 
