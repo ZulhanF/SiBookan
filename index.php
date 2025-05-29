@@ -31,28 +31,14 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SiBookan - Sistem Booking Ruangan Gedung A10</title>
-    <meta name="description" content="SiBookan adalah sistem booking ruangan untuk Gedung A10. Dapatkan akses mudah untuk memesan ruangan secara online." />
-    <meta name="keywords" content="sibookan, booking ruangan, gedung a10, sistem booking, pemesanan ruangan" />
-    <meta name="author" content="SiBookan" />
+    <title>SiBookan UNESA - Sistem Booking Ruangan Gedung A10</title>
+    <meta name="description" content="SiBookan adalah sistem booking ruangan online untuk Gedung A10 UNESA Ketintang. Pesan ruangan dengan mudah, cepat, dan efisien untuk mahasiswa dan dosen UNESA." />
+    <meta name="keywords" content="sibookan, sibookan unesa, gedung a10 unesa, booking ruangan unesa, pemesanan ruangan unesa, sistem booking unesa" />
+    <meta name="author" content="SiBookan UNESA" />
     <meta name="robots" content="index, follow" />
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://sibookan.my.id/" />
-    <meta property="og:title" content="SiBookan - Sistem Booking Ruangan Gedung A10" />
-    <meta property="og:description" content="SiBookan adalah sistem booking ruangan untuk Gedung A10. Dapatkan akses mudah untuk memesan ruangan secara online." />
-    <meta property="og:image" content="https://sibookan.my.id/logo.png" />
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content="https://sibookan.my.id/" />
-    <meta property="twitter:title" content="SiBookan - Sistem Booking Ruangan Gedung A10" />
-    <meta property="twitter:description" content="SiBookan adalah sistem booking ruangan untuk Gedung A10. Dapatkan akses mudah untuk memesan ruangan secara online." />
-    <meta property="twitter:image" content="https://sibookan.my.id/logo.png" />
-
-    <link rel="canonical" href="https://sibookan.my.id/" />
-    <link rel="shortcut icon" href="🏢" type="image/x-icon">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
