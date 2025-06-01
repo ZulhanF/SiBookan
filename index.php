@@ -55,7 +55,7 @@ if (isset($_POST['login'])) {
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 0 auto;
             padding: 2rem;
         }
@@ -103,6 +103,20 @@ if (isset($_POST['login'])) {
             transition: background 0.3s ease;
         }
 
+        .kelas-btn {
+            background: #f7ad19;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+
+        .kelas-btn:hover {
+            background:rgb(210, 145, 16);
+        }
+
         .login-btn:hover,
         .register-btn:hover {
             background: #1e3c72;
@@ -121,9 +135,10 @@ if (isset($_POST['login'])) {
 
         .hero p {
             font-size: 1.5rem;
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             opacity: 0.9;
+            margin-bottom: 2rem;
         }
 
         .features {
@@ -201,15 +216,15 @@ if (isset($_POST['login'])) {
             <a href="index.php" class="logo">SiBookan</a>
             <div class="nav-buttons">
                 <a href="login.php" class="login-btn">Login</a>
-                <a target="_blank" href="https://api.whatsapp.com/send/?phone=%2B6281946728927&text=Min%2C+info+buat+akun+sibookan&type=phone_number&app_absent=0" class="register-btn">Register</a>
             </div>
         </div>
     </header>
 
     <section class="hero">
         <div class="container">
-            <h1>Selamat Datang di SiBookan</h1>
+            <h1>Selamat Datang di <span style="color: #f7ad19;">SiBookan</span></h1>
             <p>SiBookan adalah platform booking ruangan online yang dirancang khusus untuk Gedung A10 Universitas Negeri Surabaya (UNESA). Dengan antarmuka yang mudah digunakan, SiBookan membantu mahasiswa dan dosen melakukan reservasi ruangan secara cepat, efisien, dan tanpa ribet.</p>
+            <a href="homesiswa.php" class="kelas-btn">Lihat Kelas</a>
         </div>
     </section>
 
@@ -218,19 +233,19 @@ if (isset($_POST['login'])) {
             <div class="features-grid">
                 <div class="feature-card">
                     <h3>Pencarian Ruangan Berdasarkan Waktu</h3>
-                    <p>Cari ruangan yang tersedia sesuai kebutuhanmu. Atur tanggal dan jam, SiBookan akan menampilkan pilihan ruangan yang paling sesuai secara otomatis.</p>
+                    <p>Nikmati kemudahan mencari ruangan dengan sistem pencarian cerdas kami. Pilih tanggal dan waktu yang Anda inginkan, dan SiBookan akan menampilkan daftar ruangan yang tersedia secara real-time.</p>
                 </div>
                 <div class="feature-card">
                     <h3>Booking Online 24/7</h3>
-                    <p>Pesan ruangan kapan saja dan di mana saja. Sistem kami tersedia 24 jam untuk memudahkan Anda.</p>
+                    <p>Akses sistem pemesanan ruangan kapanpun dan dimanapun Anda berada. Tidak perlu khawatir dengan jam kerja atau hari libur - SiBookan selalu siap melayani Anda 24 jam sehari, 7 hari seminggu.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Proses Cepat</h3>
-                    <p>Hanya butuh beberapa klik untuk memesan ruangan. Tidak perlu antri atau mengisi formulir manual.</p>
+                    <h3>Proses Cepat dan Efisien</h3>
+                    <p>Hilangkan kerumitan proses pemesanan manual. Dengan SiBookan, Anda dapat memesan ruangan dalam hitungan menit. Sistem kami yang intuitif memandu Anda melalui setiap langkah dengan jelas, dari pemilihan ruangan hingga konfirmasi booking.</p>
                 </div>
                 <div class="feature-card">
-                    <h3> Proses Booking Real-Time dan Transparan</h3>
-                    <p>Cukup beberapa klik untuk memesan ruangan. Setiap pemesanan diproses secara real-time, sehingga tidak ada bentrok jadwal atau booking ganda.</p>
+                    <h3>Proses Booking Real-Time dan Transparan</h3>
+                    <p>Dapatkan kepastian booking instan dengan sistem real-time kami. Setiap pemesanan langsung terkonfirmasi dan terintegrasi dengan jadwal ruangan. Pantau status booking Anda secara real-time, terima notifikasi konfirmasi, dan akses riwayat pemesanan Anda kapan saja.</p>
                 </div>
             </div>
         </div>
@@ -239,7 +254,7 @@ if (isset($_POST['login'])) {
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2024 SiBookan. All rights reserved.</p>
+            <p>&copy; 2025 SiBookan. All rights reserved.</p>
         </div>
     </footer>
 </body>

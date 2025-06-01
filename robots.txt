@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Allow: /index.php
+Allow: /home.php
+Allow: /features.php
+Allow: /about.php
+
+# Disallow sensitive areas
+Disallow: /database.php
+Disallow: /login.php
+Disallow: /register.php
+Disallow: /admin/
+Disallow: /includes/
+Disallow: /assets/
+
+# Sitemap location
+Sitemap: https://sibookan.my.id/sitemap.xml 

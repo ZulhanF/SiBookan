@@ -9,7 +9,7 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'];
     $username = $_POST['username'];
 
-    $login = "SELECT * FROM user WHERE username='$username' AND password = '$password'";
+    $login = "SELECT * FROM dosen WHERE username='$username' AND password = '$password'";
     $masuk = $db->query($login);
 
     if ($masuk->num_rows > 0) {

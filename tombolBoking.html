@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #eaeaea;
+      }
+      .Booking {
+        width: 100%;
+        max-width: 900px;
+        margin: 10px auto;
+        background-color: #1a3464;
+        border-radius: 10px;
+        padding: 32px 24px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
+        font-family: Arial, sans-serif;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+      .form-item {
+        display: flex;
+        flex-direction: column;
+      }
+      .form-item label {
+        font-size: 15px;
+        margin-bottom: 6px;
+        color: #fff;
+        font-weight: bold;
+      }
+      .Booking select,
+      .Booking input[type="date"],
+      .Booking input[type="text"] {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-bottom: 0;
+        font-size: 15px;
+      }
+      @media (max-width: 900px) {
+        .Booking {
+          max-width: 98vw;
+          padding: 18px 6px;
+        }
+        .form-grid {
+          gap: 10px;
+        }
+      }
+      @media (max-width: 700px) {
+        .form-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 480px) {
+        .Booking {
+          padding: 10px 2vw;
+        }
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="Booking">
+      <p
+        style="
+          text-align: center;
+          font-size: 20px;
+          font-weight: bold;
+          color: #fff;
+          margin-bottom: 18px;
+          margin-top: 1px;
+        "
+      >
+        Mau Booking Dimana ?
+      </p>
+      <div class="form-grid">
+        <div class="form-item">
+          <label for="tanggal" style="font-weight: bold; color: #fff"
+            >Tanggal</label
+          >
+          <input type="date" id="tanggal" name="tanggal" />
+        </div>
+        <div class="form-item">
+          <label for="jam" style="font-weight: bold; color: #fff"
+            >Jam Mulai</label
+          >
+          <select name="jam" id="jam">
+            <option value="" disabled selected>Pilih Jam Mulai</option>
+            <option value="07:00">07:00</option>
+            <option value="07:50">07:50</option>
+            <option value="08:40">08:40</option>
+            <option value="09:30">09:30</option>
+            <option value="10:20">10:20</option>
+            <option value="11:10">11:10</option>
+            <option value="12:00">12:00</option>
+            <option value="12:50">12:50</option>
+            <option value="13:40">13:40</option>
+            <option value="14:30">14:30</option>
+            <option value="15:20">15:20</option>
+            <option value="16:10">16:10</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="sks" style="font-weight: bold; color: #fff"
+            >Jumlah SKS</label
+          >
+          <select name="sks" id="sks">
+            <option value="" disabled selected>Pilih Jumlah SKS</option>
+            <option value="1">1 SKS</option>
+            <option value="2">2 SKS</option>
+            <option value="3">3 SKS</option>
+            <option value="4">4 SKS</option>
+            <option value="5">5 SKS</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="ruangan" style="font-weight: bold; color: #fff"
+            >Ruangan</label
+          >
+          <select name="ruangan" id="ruangan">
+            <option value="" disabled selected>Pilih Ruangan</option>
+            <option value="ruang1">A10.01.01</option>
+            <option value="ruang2">A10.01.02</option>
+            <option value="ruang3">A10.01.03</option>
+            <option value="ruang4">A10.01.04</option>
+            <option value="ruang5">A10.01.05</option>
+            <option value="ruang6">A10.01.06</option>
+            <option value="ruang7">A10.01.07</option>
+            <option value="ruang8">A10.01.08</option>
+            <option value="ruang9">A10.01.09</option>
+            <option value="ruang10">A10.01.10</option>
+            <option value="ruang11">A10.01.11</option>
+            <option value="ruang12">A10.01.12</option>
+            <option value="ruang13">A10.01.13</option>
+            <option value="ruang14">A10.01.14</option>
+            <option value="ruang15">A10.01.15</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="matkul" style="font-weight: bold; color: #fff"
+            >Mata Kuliah</label
+          >
+          <select name="matkul" id="matkul">
+            <option value="" disabled selected>Pilih Mata Kuliah</option>
+            <option value="matkul1">Algoritma dan Pemrograman</option>
+            <option value="matkul2">Basis Data</option>
+            <option value="matkul3">Jaringan Komputer</option>
+            <option value="matkul4">Sistem Operasi</option>
+            <option value="matkul5">Rekayasa Perangkat Lunak</option>
+          </select>
+        </div>
+        <div class="form-item">
+          <label for="kelas" style="font-weight: bold; color: #fff"
+            >Kelas</label
+          >
+          <input type="text" id="kelas" placeholder="Contoh: TI23C" />
+        </div>
+      </div>
+      <script>
+        // Set min date ke hari ini
+        document.addEventListener("DOMContentLoaded", function () {
+          const today = new Date().toISOString().split("T")[0];
+          document.getElementById("tanggal").setAttribute("min", today);
+        });
+      </script>
+      <div style="text-align: center; margin-top: 20px">
+        <button
+          style="
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+          "
+        >
+          Booking Sekarang
+        </button>
+      </div>
+    </div>
+  </body>
+</html>
