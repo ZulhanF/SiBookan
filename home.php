@@ -379,7 +379,7 @@ if (isset($_SESSION["username"])) {
     </header>
 
     <div class="table-container">
-        <h1>Daftar <span style="color: #f7ad19;">Ruanganku</span></h1>
+        <h1>Booking <span style="color: #f7ad19;">Ruangan</span></h1>
         <div class="button-container">
             <a href="ubahjadwal.php" class="button">Pilih Waktu</a>
             <a href="hapusjadwal.php" class="button">Pilih Tanggal</a>
