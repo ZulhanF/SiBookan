@@ -1,3 +1,66 @@
+<?php
+include "database.php";
+
+session_start();
+
+// Cek apakah user sudah login
+if (isset($_POST['login'])) {
+    $password = $_POST['password'];
+    $username = $_POST['username'];
+
+    $login = "SELECT * FROM dosen WHERE username='$username' AND password = '$password'";
+    $masuk = $db->query($login);
+
+    if ($masuk->num_rows > 0) {
+        $tabel = $masuk->fetch_assoc();
+        $_SESSION["username"] = $tabel["username"];
+        $_SESSION["nama"] = $tabel["nama_dosen"];
+        $_SESSION["is_login"] = true;
+        header("Location: daftarpj.php");
+        exit();
+    } else {
+        $error_message = "Username atau password salah!";
+    }
+}
+
+// Handle form submissions
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (isset($_POST['submit_pj'])) {
+        $nama = mysqli_real_escape_string($db, $_POST['nama']);
+        $nim = mysqli_real_escape_string($db, $_POST['nim']);
+        $password = mysqli_real_escape_string($db, $_POST['password']);
+        $kelas = mysqli_real_escape_string($db, $_POST['kelas']);
+        $matkul = mysqli_real_escape_string($db, $_POST['matakuliah']);
+        $dosen = mysqli_real_escape_string($db, $_SESSION["nama"]);
+        
+        $sql = "INSERT INTO penanggung_jawab (nama, nim, password, kelas, matkul, dosen) VALUES ('$nama', '$nim', '$password', '$kelas', '$matkul', '$dosen')";
+        
+        if (mysqli_query($db, $sql)) {
+            echo "<script>alert('PJ berhasil ditambahkan!');</script>";
+        } else {
+            echo "<script>alert('Error: " . mysqli_error($db) . "');</script>";
+        }
+    }
+    
+    if (isset($_POST['delete_pj'])) {
+        $nim = mysqli_real_escape_string($db, $_POST['deleteNim']);
+        $dosen = mysqli_real_escape_string($db, $_SESSION["nama"]);
+        
+        $sql = "DELETE FROM penanggung_jawab WHERE nim = '$nim' AND dosen = '$dosen'";
+        
+        if (mysqli_query($db, $sql)) {
+            echo "<script>alert('PJ berhasil dihapus!');</script>";
+        } else {
+            echo "<script>alert('Error: " . mysqli_error($db) . "');</script>";
+        }
+    }
+}
+
+// Fetch data from penanggung_jawab table for logged in dosen only
+$dosen = mysqli_real_escape_string($db, $_SESSION["nama"]);
+$sql = "SELECT * FROM penanggung_jawab WHERE dosen = '$dosen'";
+$result = mysqli_query($db, $sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -288,41 +351,35 @@
     </header>
     <section>
         <div class="container">
+
             <h1>Daftar <span style="color: #f7ad19;">PJ</span></h1>
+            <h2>Dosen: <?php echo $_SESSION["nama"]; ?></h2>
             <table>
                 <thead>
                     <tr>
                         <th>Nama</th>
                         <th>NIM</th>
+                        <th>Password</th>
                         <th>Kelas</th>
                         <th>Mata Kuliah</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Ahmad Fauzi</td>
-                        <td>1234567890</td>
-                        <td>TI-1A</td>
-                        <td>Algoritma dan Pemrograman</td>
-                    </tr>
-                    <tr>
-                        <td>Siti Aminah</td>
-                        <td>0987654321</td>
-                        <td>TI-1B</td>
-                        <td>Basis Data</td>
-                    </tr>
-                    <tr>
-                        <td>Budi Santoso</td>
-                        <td>1122334455</td>
-                        <td>TI-1C</td>
-                        <td>Jaringan Komputer</td>
-                    </tr>
-                    <tr>
-                        <td>Dewi Lestari</td>
-                        <td>5566778899</td>
-                        <td>TI-1D</td>
-                        <td>Sistem Operasi</td>
-                    </tr>
+                    <?php
+                    if (mysqli_num_rows($result) > 0) {
+                        while($row = mysqli_fetch_assoc($result)) {
+                            echo "<tr>";
+                            echo "<td>" . $row['nama'] . "</td>";
+                            echo "<td>" . $row['nim'] . "</td>";
+                            echo "<td>" . $row['password'] . "</td>";
+                            echo "<td>" . $row['kelas'] . "</td>";
+                            echo "<td>" . $row['matkul'] . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='4' style='text-align: center;'>Tidak ada data PJ</td></tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
 
@@ -332,8 +389,12 @@
             </div>
 
             <div id="pjForm" style="display: none;">
-                <form>
+                <form method="POST" action="">
                     <button type="button" class="close-btn" onclick="toggleForm()">&times;</button>
+                    <div style="margin-bottom: 15px;">
+                        <label for="nama" style="display: block; margin-bottom: 5px;">Nama:</label>
+                        <input type="text" id="nama" name="nama" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
                     <div style="margin-bottom: 15px;">
                         <label for="nim" style="display: block; margin-bottom: 5px;">NIM:</label>
                         <input type="text" id="nim" name="nim" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
@@ -343,21 +404,26 @@
                         <input type="password" id="password" name="password" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
                     <div style="margin-bottom: 15px;">
+                        <label for="kelas" style="display: block; margin-bottom: 5px;">Kelas:</label>
+                        <input type="text" id="kelas" name="kelas" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+                    <div style="margin-bottom: 15px;">
                         <label for="matakuliah" style="display: block; margin-bottom: 5px;">Mata Kuliah:</label>
                         <input type="text" id="matakuliah" name="matakuliah" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
-                    <button type="submit" class="button">Submit</button>
+
+                    <button type="submit" name="submit_pj" class="button">Submit</button>
                 </form>
             </div>
 
             <div id="deleteForm" style="display: none;">
-                <form>
+                <form method="POST" action="">
                     <button type="button" class="close-btn" onclick="toggleDeleteForm()">&times;</button>
                     <div style="margin-bottom: 15px;">
                         <label for="deleteNim" style="display: block; margin-bottom: 5px;">NIM PJ yang akan dihapus:</label>
                         <input type="text" id="deleteNim" name="deleteNim" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
                     </div>
-                    <button type="submit" class="button">Hapus</button>
+                    <button type="submit" name="delete_pj" class="button">Hapus</button>
                 </form>
             </div>
 

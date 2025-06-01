@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
     if ($masuk->num_rows > 0) {
         $tabel = $masuk->fetch_assoc();
         $_SESSION["username"] = $tabel["username"];
-        $_SESSION["nama"] = $tabel["nama"];
+        $_SESSION["nama"] = $tabel["nama_dosen"];
         $_SESSION["is_login"] = true;
         header("Location: home.php");
         exit();
