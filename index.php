@@ -31,18 +31,49 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SiBookan UNESA - Sistem Booking Ruangan Gedung A10</title>
-    <meta name="description" content="SiBookan adalah sistem booking ruangan online untuk Gedung A10 UNESA Ketintang. Pesan ruangan dengan mudah, cepat, dan efisien untuk mahasiswa dan dosen UNESA." />
-    <meta name="keywords" content="sibookan, sibookan unesa, gedung a10 unesa, booking ruangan unesa, pemesanan ruangan unesa, sistem booking unesa" />
+    <title>SiBookan UNESA - Sistem Booking Ruangan Online Gedung A10</title>
+    <meta name="description" content="SiBookan adalah sistem booking ruangan online untuk Gedung A10 UNESA Ketintang. Pesan ruangan dengan mudah, cepat, dan efisien untuk mahasiswa dan dosen UNESA. Fitur pencarian real-time, booking 24/7, dan proses cepat." />
+    <meta name="keywords" content="sibookan, sibookan unesa, gedung a10 unesa, booking ruangan unesa, pemesanan ruangan unesa, sistem booking unesa, reservasi ruangan unesa, jadwal ruangan unesa, ruang kuliah unesa" />
     <meta name="author" content="SiBookan UNESA" />
     <meta name="robots" content="index, follow" />
-
+    <meta name="language" content="Indonesian" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="generator" content="SiBookan UNESA" />
+    <meta property="og:title" content="SiBookan - Sistem Booking Ruangan Online Gedung A10" />
+    <meta property="og:description" content="SiBookan adalah sistem booking ruangan online untuk Gedung A10 UNESA Ketintang. Pesan ruangan dengan mudah, cepat, dan efisien untuk mahasiswa dan dosen UNESA." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://sibookan.my.id" />
+    <meta property="og:image" content="https://sibookan.my.id/favicon-96x96.png" />
+    
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
 	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-	<meta name="apple-mobile-web-app-title" content="MyWebSite" />
+	<meta name="apple-mobile-web-app-title" content="SiBookan" />
 	<link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://sibookan.my.id" />
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "SiBookan",
+        "description": "Sistem booking ruangan online untuk Gedung A10 UNESA Ketintang",
+        "url": "https://sibookan.my.id",
+        "applicationCategory": "Education",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "IDR"
+        },
+        "featureList": [
+            "Pencarian Ruangan Berdasarkan Waktu",
+            "Booking Online 24/7",
+            "Proses Cepat dan Efisien"
+        ]
+    }
+    </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -228,8 +259,8 @@ if (isset($_POST['login'])) {
     <section class="hero">
         <div class="container">
             <h1>Selamat Datang di <span style="color: #f7ad19;">SiBookan</span></h1>
-            <p>SiBookan adalah platform booking ruangan online yang dirancang khusus untuk Gedung A10 Universitas Negeri Surabaya (UNESA). Dengan antarmuka yang mudah digunakan, SiBookan membantu mahasiswa dan dosen melakukan reservasi ruangan secara cepat, efisien, dan tanpa ribet.</p>
-            <a href="homesiswa.php" class="kelas-btn">Lihat Kelas</a>
+            <p>SiBookan adalah platform booking ruangan online yang dirancang khusus untuk Gedung A10 Universitas Negeri Surabaya (UNESA). Dengan antarmuka yang mudah digunakan, SiBookan membantu mahasiswa dan dosen melakukan reservasi ruangan secara cepat, efisien, dan tanpa ribet. Sistem kami menyediakan fitur pencarian real-time, booking 24/7, dan proses pemesanan yang cepat.</p>
+            <a href="homesiswa.php" class="kelas-btn" aria-label="Lihat Jadwal Kelas">Lihat Kelas</a>
         </div>
     </section>
 
@@ -238,19 +269,15 @@ if (isset($_POST['login'])) {
             <div class="features-grid">
                 <div class="feature-card">
                     <h2>Pencarian Ruangan Berdasarkan Waktu</h2>
-                    <p>Nikmati kemudahan mencari ruangan dengan sistem pencarian cerdas kami. Pilih tanggal dan waktu yang Anda inginkan, dan SiBookan akan menampilkan daftar ruangan yang tersedia secara real-time.</p>
+                    <p>Nikmati kemudahan mencari ruangan dengan sistem pencarian cerdas kami. Pilih tanggal dan waktu yang Anda inginkan, dan SiBookan akan menampilkan daftar ruangan yang tersedia secara real-time. Sistem kami memastikan tidak ada jadwal yang bertabrakan.</p>
                 </div>
                 <div class="feature-card">
                     <h2>Booking Online 24/7</h2>
-                    <p>Akses sistem pemesanan ruangan kapanpun dan dimanapun Anda berada. Tidak perlu khawatir dengan jam kerja atau hari libur - SiBookan selalu siap melayani Anda 24 jam sehari, 7 hari seminggu.</p>
+                    <p>Akses sistem pemesanan ruangan kapanpun dan dimanapun Anda berada. Tidak perlu khawatir dengan jam kerja atau hari libur - SiBookan selalu siap melayani Anda 24 jam sehari, 7 hari seminggu. Proses booking yang mudah dan cepat.</p>
                 </div>
                 <div class="feature-card">
                     <h2>Proses Cepat dan Efisien</h2>
-                    <p>Hilangkan kerumitan proses pemesanan manual. Dengan SiBookan, Anda dapat memesan ruangan dalam hitungan menit. Sistem kami yang intuitif memandu Anda melalui setiap langkah dengan jelas, dari pemilihan ruangan hingga konfirmasi booking.</p>
-                </div>
-                <div class="feature-card">
-                    <h2>Proses Booking Real-Time dan Transparan</h2>
-                    <p>Dapatkan kepastian booking instan dengan sistem real-time kami. Setiap pemesanan langsung terkonfirmasi dan terintegrasi dengan jadwal ruangan. Pantau status booking Anda secara real-time, terima notifikasi konfirmasi, dan akses riwayat pemesanan Anda kapan saja.</p>
+                    <p>Hilangkan kerumitan proses pemesanan manual. Dengan SiBookan, Anda dapat memesan ruangan dalam hitungan menit. Sistem kami yang intuitif memandu Anda melalui setiap langkah dengan jelas, dari pemilihan ruangan hingga konfirmasi booking. Hemat waktu dan tenaga Anda.</p>
                 </div>
             </div>
         </div>
