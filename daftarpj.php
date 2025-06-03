@@ -90,14 +90,15 @@ $result = mysqli_query($db, $sql);
         }
 
         .container {
+            margin-top: 8rem;
+            padding: 2rem;
             background: white;
             border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
             max-width: 1500px;
-            margin: 0 auto;
-            padding: 2rem;
-            margin-bottom: 80px;
-            margin-top: 7rem;
-            flex: 1;
         }
 
         .container h1 {
@@ -205,7 +206,7 @@ $result = mysqli_query($db, $sql);
             background: #ffffff;
             width: 100%;
             border-collapse: collapse;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             margin: 20px 0;
@@ -218,7 +219,7 @@ $result = mysqli_query($db, $sql);
         }
 
         table th {
-            background-color: #2a5298;
+            background-color: #1e3c72;
             color: #ffffff;
             font-weight: 500;
             font-style: bold;

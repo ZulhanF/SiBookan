@@ -160,6 +160,7 @@ $result = mysqli_query($db, $query);
             margin-bottom: 2rem;
             margin-left: 2rem;
             margin-right: 2rem;
+            max-width: 1500px;
         }
 
         h1 {
@@ -171,11 +172,13 @@ $result = mysqli_query($db, $query);
         }
 
         table {
+            background: #ffffff;
             width: 100%;
             border-collapse: collapse;
-            margin: 0 auto;
-            background: white;
-            table-layout: fixed;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
         }
 
         th, td {

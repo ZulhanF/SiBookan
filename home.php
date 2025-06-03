@@ -234,9 +234,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            margin-left: auto;
-            margin-right: auto;
-            width: 90%;
+            margin-left: 2rem;
+            margin-right: 2rem;
+            max-width: 1500px;
         }
 
         h1 {
@@ -246,12 +246,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             color: #429ebd;
             text-align: center;
         }
-
         table {
+            background: #ffffff;
             width: 100%;
             border-collapse: collapse;
-            margin: 0 auto;
-            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
         }
 
         th,
@@ -259,7 +261,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
-            white-space: nowrap;
+            word-wrap: break-word;
         }
 
         th {
@@ -304,8 +306,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
 
         .Booking {
             width: 100%;
-            max-width: 1600px;
-            margin: 10px auto;
+            max-width: 1500px;
+            margin: 2rem auto;
             background-color: #1a3464;
             border-radius: 10px;
             padding: 32px 24px;
@@ -491,6 +493,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                 font-size: 12px;
             }
         }
+
+        /* Set column widths */
+        th:nth-child(1), td:nth-child(1) { width: 15%; } /* Tanggal */
+        th:nth-child(2), td:nth-child(2) { width: 15%; } /* Nomor Ruangan */
+        th:nth-child(3), td:nth-child(3) { width: 15%; } /* Status */
+        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Matkul */
+        th:nth-child(5), td:nth-child(5) { width: 15%; } /* Kelas */
+        th:nth-child(6), td:nth-child(6) { width: 15%; } /* Dosen */
     </style>
 </head>
 
