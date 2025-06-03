@@ -32,24 +32,25 @@ if (isset($_POST['login'])) {
 }
 
 // Fungsi untuk mengambil mata kuliah berdasarkan dosen
-function getMatakuliahByDosen($db, $username) {
+function getMatakuliahByDosen($db, $username)
+{
     $query = "SELECT mk.id_matkul, mk.nama_matkul 
               FROM mata_kuliah mk
               INNER JOIN dosen_mata_kuliah dmk ON mk.id_matkul = dmk.id_matkul
               INNER JOIN dosen u ON dmk.id_dosen = u.id_dosen
               WHERE u.username = ?
               ORDER BY mk.nama_matkul ASC";
-    
+
     $stmt = $db->prepare($query);
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     $matakuliah_list = [];
     while ($row = $result->fetch_assoc()) {
         $matakuliah_list[] = $row;
     }
-    
+
     return $matakuliah_list;
 }
 
@@ -59,12 +60,42 @@ if (isset($_SESSION["username"])) {
 }
 
 // Query untuk mengambil data booking
-$query = "SELECT br.*, d.nama_dosen, mk.nama_matkul 
-          FROM booking_ruangan br 
-          JOIN dosen d ON br.id_dosen = d.id_dosen 
-          JOIN mata_kuliah mk ON br.id_matkul = mk.id_matkul 
-          ORDER BY br.tanggal DESC, br.jam_mulai ASC";
-$result = mysqli_query($db, $query);
+$filter_tanggal = isset($_GET['tanggal']) ? $_GET['tanggal'] : date('Y-m-d');
+$filter_jam = isset($_GET['jam']) ? $_GET['jam'] : '';
+
+if ($filter_jam && $filter_tanggal) {
+    // Filter berdasarkan tanggal dan jam
+    $query = "SELECT br.*, d.nama_dosen, mk.nama_matkul 
+              FROM booking_ruangan br 
+              JOIN dosen d ON br.id_dosen = d.id_dosen 
+              JOIN mata_kuliah mk ON br.id_matkul = mk.id_matkul 
+              WHERE br.tanggal = '$filter_tanggal' 
+              AND (
+                  (br.jam_mulai <= '$filter_jam' AND DATE_ADD(br.jam_mulai, INTERVAL br.durasi MINUTE) > '$filter_jam')
+              )
+              ORDER BY br.tanggal DESC, br.jam_mulai ASC";
+    $result = mysqli_query($db, $query);
+    $filter_active = true;
+} else if ($filter_tanggal) {
+    // Filter berdasarkan tanggal saja
+    $query = "SELECT br.*, d.nama_dosen, mk.nama_matkul 
+              FROM booking_ruangan br 
+              JOIN dosen d ON br.id_dosen = d.id_dosen 
+              JOIN mata_kuliah mk ON br.id_matkul = mk.id_matkul 
+              WHERE br.tanggal = '$filter_tanggal' 
+              ORDER BY br.tanggal DESC, br.jam_mulai ASC";
+    $result = mysqli_query($db, $query);
+    $filter_active = true;
+} else {
+    // Default: tampilkan semua
+    $query = "SELECT br.*, d.nama_dosen, mk.nama_matkul 
+              FROM booking_ruangan br 
+              JOIN dosen d ON br.id_dosen = d.id_dosen 
+              JOIN mata_kuliah mk ON br.id_matkul = mk.id_matkul 
+              ORDER BY br.tanggal DESC, br.jam_mulai ASC";
+    $result = mysqli_query($db, $query);
+    $filter_active = false;
+}
 
 // Proses form booking
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
@@ -74,10 +105,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
     $nomor_ruangan = mysqli_real_escape_string($db, $_POST['ruangan']);
     $id_matkul = mysqli_real_escape_string($db, $_POST['matkul']);
     $kelas = mysqli_real_escape_string($db, $_POST['kelas']);
-    
+
     // Hitung durasi berdasarkan SKS (1 SKS = 50 menit)
     $durasi = $jumlah_sks * 50;
-    
+
     // Ambil id_dosen dari session
     $username = $_SESSION["username"];
     $query_dosen = "SELECT id_dosen FROM dosen WHERE username = '$username'";
@@ -97,16 +128,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
     $check_result = mysqli_query($db, $check_query);
 
     if (mysqli_num_rows($check_result) > 0) {
-        echo "<script>alert('Ruangan sudah dibooking pada waktu tersebut!');</script>";
+        header("Location: home.php?notif=fail_booking");
+        exit();
+        // echo "<script>alert('Ruangan sudah dibooking pada waktu tersebut!');</script>";
     } else {
         // Insert booking baru
         $insert_query = "INSERT INTO booking_ruangan (tanggal, jam_mulai, durasi, jumlah_sks, nomor_ruangan, id_matkul, kelas, id_dosen, status_booking) 
                         VALUES ('$tanggal', '$jam_mulai', $durasi, '$jumlah_sks', '$nomor_ruangan', '$id_matkul', '$kelas', '$id_dosen', 'Dipakai')";
-        
+
         if (mysqli_query($db, $insert_query)) {
-            echo "<script>alert('Booking berhasil!'); window.location.href='home.php';</script>";
+            header("Location: home.php?notif=success_booking");
+            exit();
+            // echo "<script>alert('Booking berhasil!'); window.location.href='home.php';</script>";
         } else {
-            echo "<script>alert('Error: " . mysqli_error($db) . "');</script>";
+            header("Location: home.php?notif=error_booking");
+            exit();
+            // echo "<script>alert('Error: " . mysqli_error($db) . "');</script>";
         }
     }
 }
@@ -144,6 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
         body {
             min-height: 100vh;
             background: linear-gradient(135deg, #1a3464, #3668c0);
+            background-size: cover;
             color: #333;
             display: flex;
             flex-direction: column;
@@ -246,6 +284,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             color: #429ebd;
             text-align: center;
         }
+
         table {
             background: #ffffff;
             width: 100%;
@@ -410,8 +449,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                 width: 95%;
                 padding: 1rem;
             }
-            
-            th, td {
+
+            th,
+            td {
                 padding: 10px;
                 font-size: 14px;
             }
@@ -488,19 +528,181 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                 margin-top: 12rem;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 8px;
                 font-size: 12px;
             }
         }
 
         /* Set column widths */
-        th:nth-child(1), td:nth-child(1) { width: 15%; } /* Tanggal */
-        th:nth-child(2), td:nth-child(2) { width: 15%; } /* Nomor Ruangan */
-        th:nth-child(3), td:nth-child(3) { width: 15%; } /* Status */
-        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Matkul */
-        th:nth-child(5), td:nth-child(5) { width: 15%; } /* Kelas */
-        th:nth-child(6), td:nth-child(6) { width: 15%; } /* Dosen */
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 15%;
+        }
+
+        /* Tanggal */
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 15%;
+        }
+
+        /* Nomor Ruangan */
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 15%;
+        }
+
+        /* Status */
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 25%;
+        }
+
+        /* Matkul */
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 15%;
+        }
+
+        /* Kelas */
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 15%;
+        }
+
+        .button_booking {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .button_booking:hover {
+            background-color: rgb(55, 146, 58);
+        }
+
+        .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(66, 158, 189, 0.07);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .filter-form label {
+            font-weight: 500;
+            color: #1e3c72;
+            margin-right: 4px;
+        }
+
+        .filter-form input[type="date"],
+        .filter-form select {
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid #bcd0ee;
+            font-size: 15px;
+            background: #fff;
+            color: #1a3464;
+            min-width: 120px;
+        }
+
+        .filter-form .button {
+            padding: 8px 18px;
+            font-size: 15px;
+            border-radius: 5px;
+            background: #2a5298;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .filter-form .button:hover {
+            background: #1e3c72;
+        }
+
+        @media (max-width: 600px) {
+            .filter-form {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 10px 6px;
+            }
+        }
+
+        .notif-popup {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 280px;
+            max-width: 90vw;
+            background: #fff;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
+            padding: 18px 32px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 6px solid #2a5298;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s, top 0.3s;
+        }
+
+        .notif-popup.show {
+            opacity: 1;
+            pointer-events: auto;
+            top: 100px;
+        }
+
+        .notif-popup.success {
+            border-left-color: #4caf50;
+        }
+
+        .notif-popup.fail {
+            border-left-color: #e53935;
+        }
+
+        .notif-popup.error {
+            border-left-color: #fbc02d;
+        }
+
+        .notif-popup .material-icons {
+            font-size: 28px;
+        }
+
+        .nav-btn-logout {
+            background: #e53935;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-btn-logout:hover {
+            background: #b71c1c;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 
@@ -526,16 +728,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     <span class="material-icons">group</span>
                     Daftar PJ
                 </a>
+                <a href="logout.php" class="nav-btn-logout">
+                    <span class="material-icons">logout</span>
+                    Logout
+                </a>
             </div>
         </div>
     </header>
 
     <div class="table-container">
         <h1>Booking <span style="color: #f7ad19;">Ruangan</span></h1>
-        <div class="button-container">
-            <a href="ubahjadwal.php" class="button">Pilih Waktu</a>
-            <a href="hapusjadwal.php" class="button">Pilih Tanggal</a>
-        </div>
+        <form method="get" class="filter-form">
+            <label for="tanggal">Tanggal</label>
+            <input type="date" name="tanggal" id="tanggal" value="<?= htmlspecialchars($filter_tanggal) ?>" required>
+            <label for="jam">Jam</label>
+            <select name="jam" id="jam">
+                <option value="">Pilih Jam</option>
+                <option value="07:00" <?= $filter_jam == "07:00" ? 'selected' : ''; ?>>07:00</option>
+                <option value="07:50" <?= $filter_jam == "07:50" ? 'selected' : ''; ?>>07:50</option>
+                <option value="08:40" <?= $filter_jam == "08:40" ? 'selected' : ''; ?>>08:40</option>
+                <option value="09:30" <?= $filter_jam == "09:30" ? 'selected' : ''; ?>>09:30</option>
+                <option value="10:20" <?= $filter_jam == "10:20" ? 'selected' : ''; ?>>10:20</option>
+                <option value="11:10" <?= $filter_jam == "11:10" ? 'selected' : ''; ?>>11:10</option>
+                <option value="12:00" <?= $filter_jam == "12:00" ? 'selected' : ''; ?>>12:00</option>
+                <option value="12:50" <?= $filter_jam == "12:50" ? 'selected' : ''; ?>>12:50</option>
+                <option value="13:40" <?= $filter_jam == "13:40" ? 'selected' : ''; ?>>13:40</option>
+                <option value="14:30" <?= $filter_jam == "14:30" ? 'selected' : ''; ?>>14:30</option>
+                <option value="15:20" <?= $filter_jam == "15:20" ? 'selected' : ''; ?>>15:20</option>
+                <option value="16:10" <?= $filter_jam == "16:10" ? 'selected' : ''; ?>>16:10</option>
+            </select>
+            <button type="submit" class="button">Cek</button>
+        </form>
         <table>
             <tr>
                 <th>
@@ -587,6 +810,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     echo "<td>" . htmlspecialchars($row['nama_dosen']) . "</td>";
                     echo "</tr>";
                 }
+            } else if ($filter_active) {
+                echo "<tr><td colspan='6' style='text-align: center; color: #28a745; font-family: 'Poppins', sans-serif; font-weight: bold;'>Semua kelas tersedia pada jam dan tanggal tersebut</td></tr>";
             } else {
                 echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data booking</td></tr>";
             }
@@ -665,9 +890,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     <label for="matkul" style="font-weight: bold; color: #fff">Mata Kuliah</label>
                     <select name="matkul" id="matkul" required>
                         <option value="" disabled selected>Pilih Mata Kuliah</option>
-                        <?php 
+                        <?php
                         if (!empty($matakuliah_list)) {
-                            foreach($matakuliah_list as $matkul) {
+                            foreach ($matakuliah_list as $matkul) {
                                 echo '<option value="' . $matkul['id_matkul'] . '">';
                                 echo htmlspecialchars($matkul['nama_matkul']);
                                 echo '</option>';
@@ -684,17 +909,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                 </div>
             </div>
             <div style="text-align: center; margin-top: 20px">
-                <button type="submit" name="submit_booking" style="padding: 10px 20px; background-color: #4caf50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                <button class="button_booking" type="submit" name="submit_booking">
                     Booking Sekarang
                 </button>
             </div>
         </form>
     </div>
+    <!-- Notifikasi Pop-up -->
+    <div id="notif-popup" class="notif-popup" style="display:none;"></div>
+    <script>
+        // Notifikasi pop-up
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const notif = urlParams.get('notif');
+            if (notif) {
+                const notifPopup = document.getElementById('notif-popup');
+                let message = '';
+                let icon = '';
+                let notifClass = '';
+                if (notif === 'success_booking') {
+                    message = 'Booking berhasil!';
+                    icon = '<span class="material-icons" style="color:#4caf50;">check_circle</span>';
+                    notifClass = 'success';
+                } else if (notif === 'fail_booking') {
+                    message = 'Ruangan sudah dibooking pada waktu tersebut!';
+                    icon = '<span class="material-icons" style="color:#e53935;">error</span>';
+                    notifClass = 'fail';
+                } else if (notif === 'error_booking') {
+                    message = 'Terjadi kesalahan saat booking.';
+                    icon = '<span class="material-icons" style="color:#fbc02d;">warning</span>';
+                    notifClass = 'error';
+                }
+                notifPopup.innerHTML = icon + '<span>' + message + '</span>';
+                notifPopup.className = 'notif-popup show ' + notifClass;
+                notifPopup.style.display = 'flex';
+                setTimeout(function() {
+                    notifPopup.classList.remove('show');
+                    setTimeout(function() {
+                        notifPopup.style.display = 'none';
+                        // Hapus query string notif dari URL tanpa reload
+                        if (window.history.replaceState) {
+                            window.history.replaceState({}, '', window.location.pathname);
+                        }
+                    }, 500);
+                }, 3000);
+            }
+        });
+    </script>
+
     <footer>
         <div class="footer-content">
             <p>&copy; 2025 SiBookan. All rights reserved.</p>
         </div>
     </footer>
+    <script>
+        // Set min date ke hari ini
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal').setAttribute('min', today);
+        });
+    </script>
 </body>
 
 </html>

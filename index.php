@@ -251,7 +251,7 @@ if (isset($_POST['login'])) {
         <div class="header-content">
             <a href="index.php" class="logo">SiBookan</a>
             <div class="nav-buttons">
-                <a href="login.php" class="login-btn">Login</a>
+                <a href="home.php" class="login-btn">HOME</a>
             </div>
         </div>
     </header>
@@ -278,6 +278,10 @@ if (isset($_POST['login'])) {
                 <div class="feature-card">
                     <h2>Proses Cepat dan Efisien</h2>
                     <p>Hilangkan kerumitan proses pemesanan manual. Dengan SiBookan, Anda dapat memesan ruangan dalam hitungan menit. Sistem kami yang intuitif memandu Anda melalui setiap langkah dengan jelas, dari pemilihan ruangan hingga konfirmasi booking. Hemat waktu dan tenaga Anda.</p>
+                </div>
+                <div class="feature-card">
+                    <h2>Proses Booking Real-Time</h2>
+                    <p>SiBookan memastikan proses booking ruangan berjalan lancar dan efisien. Anda dapat melihat status ruangan yang sedang dipesan dan memastikan bahwa ruangan yang Anda pilih tersedia pada waktu yang Anda tentukan.</p>
                 </div>
             </div>
         </div>
