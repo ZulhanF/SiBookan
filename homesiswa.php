@@ -257,6 +257,14 @@
             align-items: center;
             gap: 8px;
         }
+
+        .status-tersedia {
+            color: #28a745;
+        }
+
+        .status-dipakai {
+            color: #dc3545;
+        }
     </style>
 </head>
 
@@ -279,21 +287,50 @@
         </section>
 
         <div class="container">
-            <select name="jam" id="jam">
-                <option value="" disabled selected>Pilih Waktu</option>
-                <option value="07:00">07:00</option>
-                <option value="07:50">07:50</option>
-                <option value="08:40">08:40</option>
-                <option value="09:30">09:30</option>
-                <option value="10:20">10:20</option>
-                <option value="11:10">11:10</option>
-                <option value="12:00">12:00</option>
-                <option value="12:50">12:50</option>
-                <option value="13:40">13:40</option>
-                <option value="14:30">14:30</option>
-                <option value="15:20">15:20</option>
-                <option value="16:10">16:10</option>
-            </select>
+            <?php
+            include "database.php";
+
+            // Ambil waktu yang dipilih
+            $selected_time = isset($_GET['jam']) ? $_GET['jam'] : date('H:i');
+
+            // Query untuk mengambil status ruangan pada waktu yang dipilih
+            $query = "SELECT br.*, mk.nama_matkul, d.nama_dosen 
+                      FROM booking_ruangan br 
+                      LEFT JOIN mata_kuliah mk ON br.id_matkul = mk.id_matkul 
+                      LEFT JOIN dosen d ON br.id_dosen = d.id_dosen 
+                      WHERE br.tanggal = CURDATE() 
+                      AND (
+                          (br.jam_mulai <= '$selected_time' AND DATE_ADD(br.jam_mulai, INTERVAL br.durasi MINUTE) > '$selected_time')
+                      )";
+            $result = mysqli_query($db, $query);
+
+            // Buat array untuk menyimpan status ruangan
+            $ruangan_status = array();
+            while ($row = mysqli_fetch_assoc($result)) {
+                $ruangan_status[$row['nomor_ruangan']] = array(
+                    'status' => 'Dipakai',
+                    'kelas' => $row['kelas'],
+                    'matkul' => $row['nama_matkul']
+                );
+            }
+            ?>
+            <form method="GET" action="" style="margin-bottom: 20px;">
+                <select name="jam" id="jam" onchange="this.form.submit()">
+                    <option value="" disabled selected>Pilih Waktu</option>
+                    <option value="07:00" <?php echo $selected_time == '07:00' ? 'selected' : ''; ?>>07:00</option>
+                    <option value="07:50" <?php echo $selected_time == '07:50' ? 'selected' : ''; ?>>07:50</option>
+                    <option value="08:40" <?php echo $selected_time == '08:40' ? 'selected' : ''; ?>>08:40</option>
+                    <option value="09:30" <?php echo $selected_time == '09:30' ? 'selected' : ''; ?>>09:30</option>
+                    <option value="10:20" <?php echo $selected_time == '10:20' ? 'selected' : ''; ?>>10:20</option>
+                    <option value="11:10" <?php echo $selected_time == '11:10' ? 'selected' : ''; ?>>11:10</option>
+                    <option value="12:00" <?php echo $selected_time == '12:00' ? 'selected' : ''; ?>>12:00</option>
+                    <option value="12:50" <?php echo $selected_time == '12:50' ? 'selected' : ''; ?>>12:50</option>
+                    <option value="13:40" <?php echo $selected_time == '13:40' ? 'selected' : ''; ?>>13:40</option>
+                    <option value="14:30" <?php echo $selected_time == '14:30' ? 'selected' : ''; ?>>14:30</option>
+                    <option value="15:20" <?php echo $selected_time == '15:20' ? 'selected' : ''; ?>>15:20</option>
+                    <option value="16:10" <?php echo $selected_time == '16:10' ? 'selected' : ''; ?>>16:10</option>
+                </select>
+            </form>
             <table>
                 <thead>
                     <tr>
@@ -324,25 +361,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>A10.01</td>
-                        <td>Tersedia</td>
-                        <td>Kelas A</td>
-                        <td>Statistika</td>
-                    </tr>
-                    <tr>
-
-                        <td>A10.02</td>
-                        <td>Digunakan</td>
-                        <td>Kelas B</td>
-                        <td>Matematika Diskrit</td>
-                    </tr>
-                    <tr>
-                        <td>A10.03</td>
-                        <td>Tersedia</td>
-                        <td>Kelas C</td>
-                        <td>Sains Komputasi</td>
-                    </tr>
+                    <?php
+                    // Tampilkan semua ruangan
+                    for ($i = 1; $i <= 15; $i++) {
+                        $nomor_ruangan = sprintf("A10.01.%02d", $i);
+                        $status = isset($ruangan_status[$nomor_ruangan]) ? $ruangan_status[$nomor_ruangan]['status'] : 'Tersedia';
+                        $kelas = isset($ruangan_status[$nomor_ruangan]) ? $ruangan_status[$nomor_ruangan]['kelas'] : '-';
+                        $matkul = isset($ruangan_status[$nomor_ruangan]) ? $ruangan_status[$nomor_ruangan]['matkul'] : '-';
+                        
+                        // Tambahkan class untuk styling status
+                        $status_class = $status === 'Tersedia' ? 'status-tersedia' : 'status-dipakai';
+                        
+                        echo "<tr>";
+                        echo "<td>" . htmlspecialchars($nomor_ruangan) . "</td>";
+                        echo "<td class='$status_class'>" . htmlspecialchars($status) . "</td>";
+                        echo "<td>" . htmlspecialchars($kelas) . "</td>";
+                        echo "<td>" . htmlspecialchars($matkul) . "</td>";
+                        echo "</tr>";
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

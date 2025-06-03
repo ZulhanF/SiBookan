@@ -57,6 +57,59 @@ function getMatakuliahByDosen($db, $username) {
 if (isset($_SESSION["username"])) {
     $matakuliah_list = getMatakuliahByDosen($db, $_SESSION["username"]);
 }
+
+// Query untuk mengambil data booking
+$query = "SELECT br.*, d.nama_dosen, mk.nama_matkul 
+          FROM booking_ruangan br 
+          JOIN dosen d ON br.id_dosen = d.id_dosen 
+          JOIN mata_kuliah mk ON br.id_matkul = mk.id_matkul 
+          ORDER BY br.tanggal DESC, br.jam_mulai ASC";
+$result = mysqli_query($db, $query);
+
+// Proses form booking
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
+    $tanggal = mysqli_real_escape_string($db, $_POST['tanggal']);
+    $jam_mulai = mysqli_real_escape_string($db, $_POST['jam']);
+    $jumlah_sks = mysqli_real_escape_string($db, $_POST['sks']);
+    $nomor_ruangan = mysqli_real_escape_string($db, $_POST['ruangan']);
+    $id_matkul = mysqli_real_escape_string($db, $_POST['matkul']);
+    $kelas = mysqli_real_escape_string($db, $_POST['kelas']);
+    
+    // Hitung durasi berdasarkan SKS (1 SKS = 50 menit)
+    $durasi = $jumlah_sks * 50;
+    
+    // Ambil id_dosen dari session
+    $username = $_SESSION["username"];
+    $query_dosen = "SELECT id_dosen FROM dosen WHERE username = '$username'";
+    $result_dosen = mysqli_query($db, $query_dosen);
+    $dosen = mysqli_fetch_assoc($result_dosen);
+    $id_dosen = $dosen['id_dosen'];
+
+    // Cek apakah ruangan sudah dibooking pada waktu yang sama
+    $check_query = "SELECT * FROM booking_ruangan 
+                   WHERE nomor_ruangan = '$nomor_ruangan' 
+                   AND tanggal = '$tanggal' 
+                   AND (
+                       (jam_mulai <= '$jam_mulai' AND DATE_ADD(jam_mulai, INTERVAL durasi MINUTE) > '$jam_mulai')
+                       OR 
+                       (jam_mulai < DATE_ADD('$jam_mulai', INTERVAL $durasi MINUTE) AND jam_mulai >= '$jam_mulai')
+                   )";
+    $check_result = mysqli_query($db, $check_query);
+
+    if (mysqli_num_rows($check_result) > 0) {
+        echo "<script>alert('Ruangan sudah dibooking pada waktu tersebut!');</script>";
+    } else {
+        // Insert booking baru
+        $insert_query = "INSERT INTO booking_ruangan (tanggal, jam_mulai, durasi, jumlah_sks, nomor_ruangan, id_matkul, kelas, id_dosen, status_booking) 
+                        VALUES ('$tanggal', '$jam_mulai', $durasi, '$jumlah_sks', '$nomor_ruangan', '$id_matkul', '$kelas', '$id_dosen', 'Dipakai')";
+        
+        if (mysqli_query($db, $insert_query)) {
+            echo "<script>alert('Booking berhasil!'); window.location.href='home.php';</script>";
+        } else {
+            echo "<script>alert('Error: " . mysqli_error($db) . "');</script>";
+        }
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -512,40 +565,23 @@ if (isset($_SESSION["username"])) {
                     </div>
                 </th>
             </tr>
-            <tr>
-                <td>2024-03-20</td>
-                <td>A10.01.01</td>
-                <td>Dikonfirmasi</td>
-                <td>Pemrograman Berbasis Platform</td>
-                <td>TI23C</td>
-                <td>Dr. Ricky</td>
-            </tr>
-            <tr>
-                <td>2024-03-21</td>
-                <td>A10.01.02</td>
-                <td>Menunggu</td>
-                <td>Basis Data</td>
-                <td>TI23B</td>
-                <td>Dr. Budi</td>
-            </tr>
-			            <tr>
-                <td>2024-03-21</td>
-                <td>A10.01.02</td>
-                <td>Menunggu</td>
-                <td>Basis Data</td>
-                <td>TI23B</td>
-                <td>Dr. Budi</td>
-            </tr>
-			            <tr>
-                <td>2024-03-21</td>
-                <td>A10.01.02</td>
-                <td>Menunggu</td>
-                <td>Basis Data</td>
-                <td>TI23B</td>
-                <td>Dr. Budi</td>
-            </tr>
+            <?php
+            if ($result && mysqli_num_rows($result) > 0) {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>";
+                    echo "<td>" . date('Y-m-d', strtotime($row['tanggal'])) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nomor_ruangan']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['status_booking']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nama_matkul']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
+                    echo "<td>" . htmlspecialchars($row['nama_dosen']) . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data booking</td></tr>";
+            }
+            ?>
         </table>
-
     </div>
     <div class="Booking">
         <p
@@ -559,104 +595,90 @@ if (isset($_SESSION["username"])) {
         ">
             Mau Booking Dimana ?
         </p>
-        <div class="form-grid">
-            <div class="form-item">
-                <label for="tanggal" style="font-weight: bold; color: #fff">Tanggal</label>
-                <input type="date" id="tanggal" name="tanggal" />
-            </div>
-            <div class="form-item">
-                <label for="jam" style="font-weight: bold; color: #fff">Jam Mulai</label>
-                <select name="jam" id="jam">
-                    <option value="" disabled selected>Pilih Jam Mulai</option>
-                    <option value="07:00">07:00</option>
-                    <option value="07:50">07:50</option>
-                    <option value="08:40">08:40</option>
-                    <option value="09:30">09:30</option>
-                    <option value="10:20">10:20</option>
-                    <option value="11:10">11:10</option>
-                    <option value="12:00">12:00</option>
-                    <option value="12:50">12:50</option>
-                    <option value="13:40">13:40</option>
-                    <option value="14:30">14:30</option>
-                    <option value="15:20">15:20</option>
-                    <option value="16:10">16:10</option>
-                </select>
-            </div>
-            <div class="form-item">
-                <label for="sks" style="font-weight: bold; color: #fff">Jumlah SKS</label>
-                <select name="sks" id="sks">
-                    <option value="" disabled selected>Pilih Jumlah SKS</option>
-                    <option value="1">1 SKS</option>
-                    <option value="2">2 SKS</option>
-                    <option value="3">3 SKS</option>
-                    <option value="4">4 SKS</option>
-                    <option value="5">5 SKS</option>
-                </select>
-            </div>
-            <div class="form-item">
-                <label for="ruangan" style="font-weight: bold; color: #fff">Ruangan</label>
-                <select name="ruangan" id="ruangan">
-                    <option value="" disabled selected>Pilih Ruangan</option>
-                    <option value="ruang1">A10.01.01</option>
-                    <option value="ruang2">A10.01.02</option>
-                    <option value="ruang3">A10.01.03</option>
-                    <option value="ruang4">A10.01.04</option>
-                    <option value="ruang5">A10.01.05</option>
-                    <option value="ruang6">A10.01.06</option>
-                    <option value="ruang7">A10.01.07</option>
-                    <option value="ruang8">A10.01.08</option>
-                    <option value="ruang9">A10.01.09</option>
-                    <option value="ruang10">A10.01.10</option>
-                    <option value="ruang11">A10.01.11</option>
-                    <option value="ruang12">A10.01.12</option>
-                    <option value="ruang13">A10.01.13</option>
-                    <option value="ruang14">A10.01.14</option>
-                    <option value="ruang15">A10.01.15</option>
-                </select>
-            </div>
-            <div class="form-item">
-                <label for="matkul" style="font-weight: bold; color: #fff">Mata Kuliah</label>
-                <select name="matkul" id="matkul">
-                    <option value="" disabled selected>Pilih Mata Kuliah</option>
-                    <?php 
-                    if (!empty($matakuliah_list)) {
-                        foreach($matakuliah_list as $matkul) {
-                            echo '<option value="' . $matkul['id_matkul'] . '">';
-                            echo $matkul['nama_matkul'];
-                            echo '</option>';
+        <form method="POST" action="">
+            <div class="form-grid">
+                <div class="form-item">
+                    <label for="tanggal" style="font-weight: bold; color: #fff">Tanggal</label>
+                    <input type="date" id="tanggal" name="tanggal" required />
+                </div>
+                <div class="form-item">
+                    <label for="jam" style="font-weight: bold; color: #fff">Jam Mulai</label>
+                    <select name="jam" id="jam" required>
+                        <option value="" disabled selected>Pilih Jam Mulai</option>
+                        <option value="07:00">07:00</option>
+                        <option value="07:50">07:50</option>
+                        <option value="08:40">08:40</option>
+                        <option value="09:30">09:30</option>
+                        <option value="10:20">10:20</option>
+                        <option value="11:10">11:10</option>
+                        <option value="12:00">12:00</option>
+                        <option value="12:50">12:50</option>
+                        <option value="13:40">13:40</option>
+                        <option value="14:30">14:30</option>
+                        <option value="15:20">15:20</option>
+                        <option value="16:10">16:10</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="sks" style="font-weight: bold; color: #fff">Jumlah SKS</label>
+                    <select name="sks" id="sks" required>
+                        <option value="" disabled selected>Pilih Jumlah SKS</option>
+                        <option value="1">1 SKS</option>
+                        <option value="2">2 SKS</option>
+                        <option value="3">3 SKS</option>
+                        <option value="4">4 SKS</option>
+                        <option value="5">5 SKS</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="ruangan" style="font-weight: bold; color: #fff">Ruangan</label>
+                    <select name="ruangan" id="ruangan" required>
+                        <option value="" disabled selected>Pilih Ruangan</option>
+                        <option value="A10.01.01">A10.01.01</option>
+                        <option value="A10.01.02">A10.01.02</option>
+                        <option value="A10.01.03">A10.01.03</option>
+                        <option value="A10.01.04">A10.01.04</option>
+                        <option value="A10.01.05">A10.01.05</option>
+                        <option value="A10.01.06">A10.01.06</option>
+                        <option value="A10.01.07">A10.01.07</option>
+                        <option value="A10.01.08">A10.01.08</option>
+                        <option value="A10.01.09">A10.01.09</option>
+                        <option value="A10.01.10">A10.01.10</option>
+                        <option value="A10.01.11">A10.01.11</option>
+                        <option value="A10.01.12">A10.01.12</option>
+                        <option value="A10.01.13">A10.01.13</option>
+                        <option value="A10.01.14">A10.01.14</option>
+                        <option value="A10.01.15">A10.01.15</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="matkul" style="font-weight: bold; color: #fff">Mata Kuliah</label>
+                    <select name="matkul" id="matkul" required>
+                        <option value="" disabled selected>Pilih Mata Kuliah</option>
+                        <?php 
+                        if (!empty($matakuliah_list)) {
+                            foreach($matakuliah_list as $matkul) {
+                                echo '<option value="' . $matkul['id_matkul'] . '">';
+                                echo htmlspecialchars($matkul['nama_matkul']);
+                                echo '</option>';
+                            }
+                        } else {
+                            echo '<option value="" disabled>Tidak ada mata kuliah yang tersedia</option>';
                         }
-                    } else {
-                        echo '<option value="" disabled>Tidak ada mata kuliah yang tersedia</option>';
-                    }
-                    ?>
-                </select>
+                        ?>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="kelas" style="font-weight: bold; color: #fff">Kelas</label>
+                    <input type="text" id="kelas" name="kelas" placeholder="Contoh: TI23C" required />
+                </div>
             </div>
-            <div class="form-item">
-                <label for="kelas" style="font-weight: bold; color: #fff">Kelas</label>
-                <input type="text" id="kelas" placeholder="Contoh: TI23C" />
+            <div style="text-align: center; margin-top: 20px">
+                <button type="submit" name="submit_booking" style="padding: 10px 20px; background-color: #4caf50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                    Booking Sekarang
+                </button>
             </div>
-        </div>
-        <script>
-            // Set min date ke hari ini
-            document.addEventListener("DOMContentLoaded", function() {
-                const today = new Date().toISOString().split("T")[0];
-                document.getElementById("tanggal").setAttribute("min", today);
-            });
-        </script>
-        <div style="text-align: center; margin-top: 20px">
-            <button
-                style="
-            padding: 10px 20px;
-            background-color: #4caf50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-          ">
-                Booking Sekarang
-            </button>
-        </div>
+        </form>
     </div>
     <footer>
         <div class="footer-content">

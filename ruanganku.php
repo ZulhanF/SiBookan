@@ -23,6 +23,16 @@ if (isset($_POST['login'])) {
         $error_message = "Username atau password salah!";
     }
 }
+
+// Query untuk mengambil data booking dosen yang sedang login
+$username = $_SESSION["username"];
+$query = "SELECT br.*, mk.nama_matkul 
+          FROM booking_ruangan br 
+          JOIN dosen d ON br.id_dosen = d.id_dosen 
+          JOIN mata_kuliah mk ON br.id_matkul = mk.id_matkul 
+          WHERE d.username = '$username'
+          ORDER BY br.tanggal DESC, br.jam_mulai ASC";
+$result = mysqli_query($db, $query);
 ?>
 
 <!DOCTYPE html>
@@ -147,10 +157,9 @@ if (isset($_POST['login'])) {
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
             margin-bottom: 2rem;
-            margin-left: 10rem;
-            margin-right: 10rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
         }
 
         h1 {
@@ -166,21 +175,20 @@ if (isset($_POST['login'])) {
             border-collapse: collapse;
             margin: 0 auto;
             background: white;
+            table-layout: fixed;
         }
 
         th, td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            word-wrap: break-word;
         }
 
         th {
             background-color: #1e3c72;
             color: white;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         .header-cell {
@@ -194,11 +202,6 @@ if (isset($_POST['login'])) {
             color: white;
         }
 
-        tr {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-        }
-
         tr:hover {
             background-color: #f5f5f5;
         }
@@ -206,6 +209,14 @@ if (isset($_POST['login'])) {
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+
+        /* Set column widths */
+        th:nth-child(1), td:nth-child(1) { width: 15%; } /* Tanggal */
+        th:nth-child(2), td:nth-child(2) { width: 15%; } /* Nomor Ruangan */
+        th:nth-child(3), td:nth-child(3) { width: 20%; } /* Waktu */
+        th:nth-child(4), td:nth-child(4) { width: 25%; } /* Matkul */
+        th:nth-child(5), td:nth-child(5) { width: 15%; } /* Kelas */
+        th:nth-child(6), td:nth-child(6) { width: 10%; } /* Status */
 
         .button-container {
             display: flex;
@@ -256,6 +267,16 @@ if (isset($_POST['login'])) {
                 grid-template-columns: 1fr;
             }
         }
+
+        .status-tersedia {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .status-dipakai {
+            color: #dc3545;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -288,52 +309,65 @@ if (isset($_POST['login'])) {
     <div class="table-container">
         <h1>Daftar <span style="color: #f7ad19;">Ruanganku</span></h1>
         <table>
-            <tr>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">calendar_month</span>
-                        Tanggal
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">meeting_room</span>
-                        Nomor Ruangan
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">schedule</span>
-                        Waktu
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">menu_book</span>
-                        Matkul
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">school</span>
-                        Kelas
-                    </div>
-                </th>
-            </tr>
-            <tr>
-                <td>A10.01.1</td>
-                <td>Tersedia</td>
-                <td>Ricky</td>
-                <td>PBP</td>
-                <td>TI23C</td>
-            </tr>
-            <tr>
-                <td>A10.01.1</td>
-                <td>Tersedia</td>
-                <td>Ricky</td>
-                <td>PBP</td>
-                <td>TI23C</td>
-            </tr>
+            <thead>
+                <tr>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">calendar_month</span>
+                            Tanggal
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">meeting_room</span>
+                            Nomor Ruangan
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">schedule</span>
+                            Waktu
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">menu_book</span>
+                            Matkul
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">school</span>
+                            Kelas
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">info</span>
+                            Status
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if ($result && mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $status_class = $row['status_booking'] === 'Tersedia' ? 'status-tersedia' : 'status-dipakai';
+                        echo "<tr>";
+                        echo "<td>" . date('Y-m-d', strtotime($row['tanggal'])) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nomor_ruangan']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['jam_mulai']) . " (" . $row['jumlah_sks'] . " SKS)</td>";
+                        echo "<td>" . htmlspecialchars($row['nama_matkul']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
+                        echo "<td class='$status_class'>" . htmlspecialchars($row['status_booking']) . "</td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data booking</td></tr>";
+                }
+                ?>
+            </tbody>
         </table>
         <div class="button-container">
             <a href="ubahjadwal.php" class="button">Ubah Jadwal</a>
