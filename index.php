@@ -165,7 +165,7 @@ if (isset($_POST['login'])) {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         }
 
-        .feature-card h3 {
+        .feature-card h2 {
             color: #1e3c72;
             margin-bottom: 1rem;
             font-size: 1.3rem;
