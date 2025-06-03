@@ -180,11 +180,10 @@ if (isset($_SESSION["username"])) {
             background: white;
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            overflow-x: auto;
             margin-bottom: 2rem;
-            margin-left: 10rem;
-            margin-right: 10rem;
-            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 90%;
         }
 
         h1 {
@@ -207,6 +206,7 @@ if (isset($_SESSION["username"])) {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            white-space: nowrap;
         }
 
         th {
@@ -349,6 +349,95 @@ if (isset($_SESSION["username"])) {
                 grid-template-columns: 1fr;
             }
         }
+
+        @media screen and (max-width: 1024px) {
+            .table-container {
+                width: 95%;
+                padding: 1rem;
+            }
+            
+            th, td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .nav-buttons {
+                gap: 0.5rem;
+            }
+
+            .login-btn,
+            .register-btn,
+            .ruanganku-btn,
+            .daftarpj-btn {
+                padding: 0.6rem 1rem;
+                font-size: 14px;
+            }
+
+            .material-icons {
+                font-size: 20px;
+            }
+
+            .table-container {
+                width: 98%;
+                margin-top: 6rem;
+                padding: 0.8rem;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .button {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .Booking {
+                width: 98%;
+                padding: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .login-btn,
+            .register-btn,
+            .ruanganku-btn,
+            .daftarpj-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .table-container {
+                margin-top: 12rem;
+            }
+
+            th, td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 
@@ -432,6 +521,22 @@ if (isset($_SESSION["username"])) {
                 <td>Dr. Ricky</td>
             </tr>
             <tr>
+                <td>2024-03-21</td>
+                <td>A10.01.02</td>
+                <td>Menunggu</td>
+                <td>Basis Data</td>
+                <td>TI23B</td>
+                <td>Dr. Budi</td>
+            </tr>
+			            <tr>
+                <td>2024-03-21</td>
+                <td>A10.01.02</td>
+                <td>Menunggu</td>
+                <td>Basis Data</td>
+                <td>TI23B</td>
+                <td>Dr. Budi</td>
+            </tr>
+			            <tr>
                 <td>2024-03-21</td>
                 <td>A10.01.02</td>
                 <td>Menunggu</td>

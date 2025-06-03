@@ -37,8 +37,13 @@ if (isset($_POST['login'])) {
     <meta name="author" content="SiBookan UNESA" />
     <meta name="robots" content="index, follow" />
 
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="MyWebSite" />
+	<link rel="manifest" href="/site.webmanifest" />
+
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -105,7 +110,7 @@ if (isset($_POST['login'])) {
 
         .kelas-btn {
             background: #f7ad19;
-            color: white;
+            color: black;
             padding: 0.8rem 1.5rem;
             border-radius: 5px;
             text-decoration: none;
@@ -232,19 +237,19 @@ if (isset($_POST['login'])) {
         <div class="container">
             <div class="features-grid">
                 <div class="feature-card">
-                    <h3>Pencarian Ruangan Berdasarkan Waktu</h3>
+                    <h2>Pencarian Ruangan Berdasarkan Waktu</h2>
                     <p>Nikmati kemudahan mencari ruangan dengan sistem pencarian cerdas kami. Pilih tanggal dan waktu yang Anda inginkan, dan SiBookan akan menampilkan daftar ruangan yang tersedia secara real-time.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Booking Online 24/7</h3>
+                    <h2>Booking Online 24/7</h2>
                     <p>Akses sistem pemesanan ruangan kapanpun dan dimanapun Anda berada. Tidak perlu khawatir dengan jam kerja atau hari libur - SiBookan selalu siap melayani Anda 24 jam sehari, 7 hari seminggu.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Proses Cepat dan Efisien</h3>
+                    <h2>Proses Cepat dan Efisien</h2>
                     <p>Hilangkan kerumitan proses pemesanan manual. Dengan SiBookan, Anda dapat memesan ruangan dalam hitungan menit. Sistem kami yang intuitif memandu Anda melalui setiap langkah dengan jelas, dari pemilihan ruangan hingga konfirmasi booking.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>Proses Booking Real-Time dan Transparan</h3>
+                    <h2>Proses Booking Real-Time dan Transparan</h2>
                     <p>Dapatkan kepastian booking instan dengan sistem real-time kami. Setiap pemesanan langsung terkonfirmasi dan terintegrasi dengan jadwal ruangan. Pantau status booking Anda secara real-time, terima notifikasi konfirmasi, dan akses riwayat pemesanan Anda kapan saja.</p>
                 </div>
             </div>
