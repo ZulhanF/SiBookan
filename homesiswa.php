@@ -25,11 +25,23 @@
         }
 
         .container {
+            margin-top: 8rem;
+            padding: 2rem;
             background: white;
             border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            margin-left: 2rem;
+            margin-right: 2rem;
             max-width: 1500px;
-            margin: 0 auto;
-            padding: 2rem;
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #429ebd;
+            text-align: center;
         }
 
         header {
@@ -135,24 +147,6 @@
             background: #1e3c72;
         }
 
-        .hero {
-            padding: 8rem 0 4rem;
-            text-align: center;
-            color: white;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0rem;
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            opacity: 0.9;
-            margin-bottom: 1rem;
-        }
 
         .features {
             padding: 4rem 0;
@@ -195,6 +189,8 @@
             color: white;
             padding: 2rem 0;
             text-align: center;
+            margin-top: auto;
+            width: 100%;
         }
 
         .footer-content {
@@ -211,7 +207,7 @@
             background: #ffffff;
             width: 100%;
             border-collapse: collapse;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             margin: 20px 0;
@@ -281,12 +277,9 @@
     </header>
 
     <container>
-        <section class="hero">
-            <h1>Daftar Ruangan Gedung A10 Hari Ini</h1>
-
-        </section>
 
         <div class="container">
+            <h1>Daftar Ruangan <span style="color: #f7ad19;">Gedung A10 Hari Ini</span></h1>
             <?php
             include "database.php";
 
@@ -368,10 +361,10 @@
                         $status = isset($ruangan_status[$nomor_ruangan]) ? $ruangan_status[$nomor_ruangan]['status'] : 'Tersedia';
                         $kelas = isset($ruangan_status[$nomor_ruangan]) ? $ruangan_status[$nomor_ruangan]['kelas'] : '-';
                         $matkul = isset($ruangan_status[$nomor_ruangan]) ? $ruangan_status[$nomor_ruangan]['matkul'] : '-';
-                        
+
                         // Tambahkan class untuk styling status
                         $status_class = $status === 'Tersedia' ? 'status-tersedia' : 'status-dipakai';
-                        
+
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($nomor_ruangan) . "</td>";
                         echo "<td class='$status_class'>" . htmlspecialchars($status) . "</td>";
@@ -384,7 +377,7 @@
             </table>
         </div>
 
-        <footer style="position: fixed; bottom: 0; width: 100%;">
+        <footer>
             <div class="footer-content">
                 <p>&copy; 2025 SiBookan. All rights reserved.</p>
             </div>
