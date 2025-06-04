@@ -272,9 +272,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            margin-left: 2rem;
-            margin-right: 2rem;
+            margin-left: auto;
+            margin-right: auto;
             max-width: 1500px;
+            width: calc(100% - 4rem);
         }
 
         h1 {
@@ -344,54 +345,111 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
         }
 
         .Booking {
-            width: 100%;
+            width: calc(100% - 4rem);
             max-width: 1500px;
-            margin: 2rem auto;
-            background-color: #1a3464;
+            background: #1a3464;
             border-radius: 10px;
-            padding: 32px 24px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
-            font-family: Arial, sans-serif;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 2rem auto;
+        }
+
+        .Booking p {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #f5f5f5;
+            margin-bottom: 24px;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 18px;
+            gap: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .form-item {
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
 
         .form-item label {
             font-size: 15px;
-            margin-bottom: 6px;
-            color: #fff;
-            font-weight: bold;
+            font-weight: 500;
+            color: #1e3c72;
         }
 
         .Booking select,
         .Booking input[type="date"],
         .Booking input[type="text"] {
             width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            margin-bottom: 0;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #bcd0ee;
             font-size: 15px;
+            color: #1a3464;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .Booking select:focus,
+        .Booking input[type="date"]:focus,
+        .Booking input[type="text"]:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.1);
+        }
+
+        .Booking select option {
+            padding: 8px;
+        }
+
+        .button_booking {
+            background: #2a5298;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .button_booking:hover {
+            background: #1e3c72;
+            transform: translateY(-2px);
+        }
+
+        .button_booking:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 1200px) {
+            .table-container,
+            .Booking {
+                width: calc(100% - 4rem);
+                margin: 2rem auto;
+            }
         }
 
         @media (max-width: 900px) {
+            .table-container,
             .Booking {
-                max-width: 98vw;
-                padding: 18px 6px;
+                width: calc(100% - 2rem);
+                padding: 24px 16px;
+                margin: 1rem auto;
             }
 
             .form-grid {
-                gap: 10px;
+                gap: 16px;
             }
         }
 
@@ -402,12 +460,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
         }
 
         @media (max-width: 480px) {
+            .table-container,
             .Booking {
-                padding: 10px 2vw;
+                width: calc(100% - 2rem);
+                padding: 16px;
+                margin: 1rem auto;
             }
 
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .Booking p {
+                font-size: 20px;
             }
         }
 
@@ -819,25 +884,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
         </table>
     </div>
     <div class="Booking">
-        <p
-            style="
-          text-align: center;
-          font-size: 20px;
-          font-weight: bold;
-          color: #fff;
-          margin-bottom: 18px;
-          margin-top: 1px;
-        ">
-            Mau Booking Dimana ?
-        </p>
+        <p>Mau Booking Dimana ?</p>
         <form method="POST" action="">
             <div class="form-grid">
                 <div class="form-item">
-                    <label for="tanggal" style="font-weight: bold; color: #fff">Tanggal</label>
+                    <label for="tanggal">Tanggal</label>
                     <input type="date" id="tanggal" name="tanggal" required />
                 </div>
                 <div class="form-item">
-                    <label for="jam" style="font-weight: bold; color: #fff">Jam Mulai</label>
+                    <label for="jam">Jam Mulai</label>
                     <select name="jam" id="jam" required>
                         <option value="" disabled selected>Pilih Jam Mulai</option>
                         <option value="07:00">07:00</option>
@@ -855,7 +910,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     </select>
                 </div>
                 <div class="form-item">
-                    <label for="sks" style="font-weight: bold; color: #fff">Jumlah SKS</label>
+                    <label for="sks">Jumlah SKS</label>
                     <select name="sks" id="sks" required>
                         <option value="" disabled selected>Pilih Jumlah SKS</option>
                         <option value="1">1 SKS</option>
@@ -866,7 +921,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     </select>
                 </div>
                 <div class="form-item">
-                    <label for="ruangan" style="font-weight: bold; color: #fff">Ruangan</label>
+                    <label for="ruangan">Ruangan</label>
                     <select name="ruangan" id="ruangan" required>
                         <option value="" disabled selected>Pilih Ruangan</option>
                         <option value="A10.01.01">A10.01.01</option>
@@ -887,7 +942,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     </select>
                 </div>
                 <div class="form-item">
-                    <label for="matkul" style="font-weight: bold; color: #fff">Mata Kuliah</label>
+                    <label for="matkul">Mata Kuliah</label>
                     <select name="matkul" id="matkul" required>
                         <option value="" disabled selected>Pilih Mata Kuliah</option>
                         <?php
@@ -904,12 +959,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     </select>
                 </div>
                 <div class="form-item">
-                    <label for="kelas" style="font-weight: bold; color: #fff">Kelas</label>
+                    <label for="kelas">Kelas</label>
                     <input type="text" id="kelas" name="kelas" placeholder="Contoh: TI23C" required />
                 </div>
             </div>
-            <div style="text-align: center; margin-top: 20px">
+            <div style="text-align: center;">
                 <button class="button_booking" type="submit" name="submit_booking">
+                    <span class="material-icons">event_available</span>
                     Booking Sekarang
                 </button>
             </div>

@@ -9,6 +9,7 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'];
     $username = $_POST['username'];
 
+    // Try dosen login first
     $login = "SELECT * FROM dosen WHERE username='$username' AND password = '$password'";
     $masuk = $db->query($login);
 
@@ -17,10 +18,28 @@ if (isset($_POST['login'])) {
         $_SESSION["username"] = $tabel["username"];
         $_SESSION["nama"] = $tabel["nama_dosen"];
         $_SESSION["is_login"] = true;
+        $_SESSION["role"] = "dosen";
         header("Location: home.php");
         exit();
     } else {
-        $error_message = "Username atau password salah!";
+        // Try penanggung jawab login
+        $login_pj = "SELECT * FROM penanggung_jawab WHERE nim='$username' AND password = '$password'";
+        $masuk_pj = $db->query($login_pj);
+
+        if ($masuk_pj->num_rows > 0) {
+            $tabel_pj = $masuk_pj->fetch_assoc();
+            $_SESSION["username"] = $tabel_pj["nim"];
+            $_SESSION["nama"] = $tabel_pj["nama"];
+            $_SESSION["is_login"] = true;
+            $_SESSION["role"] = "pj";
+            $_SESSION["kelas"] = $tabel_pj["kelas"];
+            $_SESSION["matkul"] = $tabel_pj["matkul"];
+            $_SESSION["dosen"] = $tabel_pj["dosen"];
+            header("Location: homepj.php");
+            exit();
+        } else {
+            $error_message = "Username atau password salah!";
+        }
     }
 }
 ?>
