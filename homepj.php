@@ -129,6 +129,98 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        @media screen and (max-width: 768px) {
+            .container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .filter-form {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .filter-form label,
+            .filter-form input[type="date"],
+            .filter-form select,
+            .filter-form .button {
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+
+            .booking-form {
+                padding: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1rem;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 2rem 0;
+        }
+
+        table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                min-height: 100vh;
+                height: 100vh;
+                overflow-y: auto;
+            }
+
+            .info-box {
+                padding: 1rem;
+                margin: 1rem 0;
+            }
+
+            .info-box p {
+                font-size: 0.9rem;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+                margin: 1rem 0;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+                margin: 1rem 0;
+            }
+        }
+
         header {
             background: white;
             padding: 1rem 0;
@@ -228,16 +320,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
 
         .submit-btn:hover {
             background: #1e3c72;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 2rem 0;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         th, td {
@@ -383,34 +465,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
         </div>
 
         <h2>Daftar Booking</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Ruangan</th>
-                    <th>Tanggal</th>
-                    <th>Jam Mulai</th>
-                    <th>Durasi</th>
-                    <th>Kelas</th>
-                    <th>Mata Kuliah</th>
-                    <th>Dosen</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($row['nomor_ruangan']); ?></td>
-                    <td><?php echo htmlspecialchars($row['tanggal']); ?></td>
-                    <td><?php echo htmlspecialchars($row['jam_mulai']); ?></td>
-                    <td><?php echo htmlspecialchars($row['durasi']); ?> menit</td>
-                    <td><?php echo htmlspecialchars($row['kelas']); ?></td>
-                    <td><?php echo htmlspecialchars($row['nama_matkul']); ?></td>
-                    <td><?php echo htmlspecialchars($row['nama_dosen']); ?></td>
-                    <td><?php echo htmlspecialchars($row['status_booking']); ?></td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ruangan</th>
+                        <th>Tanggal</th>
+                        <th>Jam Mulai</th>
+                        <th>Durasi</th>
+                        <th>Kelas</th>
+                        <th>Mata Kuliah</th>
+                        <th>Dosen</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($result && mysqli_num_rows($result) > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . htmlspecialchars($row['nomor_ruangan']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['tanggal']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['jam_mulai']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['durasi']) . " menit</td>";
+                            echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['nama_matkul']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['nama_dosen']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['status_booking']) . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='6' style='text-align: center; color: #28a745; font-family: 'Poppins', sans-serif; font-weight: bold;'>Semua kelas tersedia pada jam dan tanggal tersebut</td></tr>";
+                    }
+                    ?>
+                </tbody>
+            </table>
+        </div>
 
         <div class="booking-form">
             <h2>Buat Booking Baru</h2>

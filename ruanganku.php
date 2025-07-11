@@ -17,7 +17,7 @@ if (isset($_POST['login'])) {
         $_SESSION["username"] = $tabel["username"];
         $_SESSION["nama"] = $tabel["nama"];
         $_SESSION["is_login"] = true;
-        header("Location: home.php");
+        header("Location: /home");
         exit();
     } else {
         $error_message = "Username atau password salah!";
@@ -172,6 +172,17 @@ if (isset($_POST['submit_hapus'])) {
             font-size: 24px;
         }
 
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger .material-icons {
+            color: #1e3c72;
+            font-size: 28px;
+        }
+
         .nav-buttons {
             display: flex;
             gap: 1rem;
@@ -229,9 +240,10 @@ if (isset($_POST['submit_hapus'])) {
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            margin-left: 2rem;
-            margin-right: 2rem;
+            margin-left: auto;
+            margin-right: auto;
             max-width: 1500px;
+            width: calc(100% - 4rem);
         }
 
         h1 {
@@ -242,8 +254,13 @@ if (isset($_POST['submit_hapus'])) {
             text-align: center;
         }
 
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         table {
-            background: #ffffff;
             width: 100%;
             border-collapse: collapse;
             border-radius: 10px;
@@ -430,6 +447,87 @@ if (isset($_POST['submit_hapus'])) {
         .notif-popup .material-icons {
             font-size: 28px;
         }
+
+        /* Hamburger Menu Styles */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger .material-icons {
+            color: #1e3c72;
+            font-size: 28px;
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        .mobile-nav.show {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav a {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Mobile Table Styles */
+        @media screen and (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .table-container {
+                margin-top: 6rem;
+                padding: 1rem;
+                width: calc(100% - 2rem);
+            }
+
+            .table-wrapper {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+
+            table {
+                min-width: 800px;
+                margin: 0;
+            }
+
+            .button-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .button {
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Popup form styles for mobile */
+            #ubahForm form,
+            #hapusForm form {
+                width: 90%;
+                max-width: 400px;
+                margin: 1rem;
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 
@@ -437,25 +535,28 @@ if (isset($_POST['submit_hapus'])) {
     <header>
         <div class="header-content">
             <div class="logo-container">
-                <a href="index.php" class="logo">
+                <a href="/index" class="logo">
                     <span class="material-icons">school</span>
                     SiBookan
                 </a>
             </div>
+            <div class="hamburger" id="hamburger">
+                <span class="material-icons">menu</span>
+            </div>
             <div class="nav-buttons">
-                <a href="home.php" class="login-btn">
+                <a href="/home" class="login-btn">
                     <span class="material-icons">event_available</span>
                     Booking
                 </a>
-                <a href="ruanganku.php" class="ruanganku-btn">
+                <a href="/ruanganku" class="ruanganku-btn">
                     <span class="material-icons">meeting_room</span>
                     Ruanganku
                 </a>
-                <a href="daftarpj.php" class="daftarpj-btn">
+                <a href="/daftarpj" class="daftarpj-btn">
                     <span class="material-icons">group</span>
                     Daftar PJ
                 </a>
-                <a href="logout.php" class="nav-btn-logout">
+                <a href="/logout" class="nav-btn-logout">
                     <span class="material-icons">logout</span>
                     Logout
                 </a>
@@ -463,69 +564,91 @@ if (isset($_POST['submit_hapus'])) {
         </div>
     </header>
 
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/home" class="login-btn">
+            <span class="material-icons">event_available</span>
+            Booking
+        </a>
+        <a href="/ruanganku" class="ruanganku-btn">
+            <span class="material-icons">meeting_room</span>
+            Ruanganku
+        </a>
+        <a href="/daftarpj" class="daftarpj-btn">
+            <span class="material-icons">group</span>
+            Daftar PJ
+        </a>
+        <a href="/logout" class="nav-btn-logout">
+            <span class="material-icons">logout</span>
+            Logout
+        </a>
+    </div>
+
     <div class="table-container">
         <h1>Daftar <span style="color: #f7ad19;">Ruanganku</span></h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        <div class="header-cell">
-                            <span class="material-icons">calendar_month</span>
-                            Tanggal
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header-cell">
-                            <span class="material-icons">meeting_room</span>
-                            Nomor Ruangan
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header-cell">
-                            <span class="material-icons">schedule</span>
-                            Waktu
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header-cell">
-                            <span class="material-icons">menu_book</span>
-                            Matkul
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header-cell">
-                            <span class="material-icons">school</span>
-                            Kelas
-                        </div>
-                    </th>
-                    <th>
-                        <div class="header-cell">
-                            <span class="material-icons">info</span>
-                            Status
-                        </div>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if ($result && mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        $status_class = $row['status_booking'] === 'Tersedia' ? 'status-tersedia' : 'status-dipakai';
-                        echo "<tr>";
-                        echo "<td>" . date('Y-m-d', strtotime($row['tanggal'])) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['nomor_ruangan']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['jam_mulai']) . " (" . $row['jumlah_sks'] . " SKS)</td>";
-                        echo "<td>" . htmlspecialchars($row['nama_matkul']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
-                        echo "<td class='$status_class'>" . htmlspecialchars($row['status_booking']) . "</td>";
-                        echo "</tr>";
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">calendar_month</span>
+                                Tanggal
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">meeting_room</span>
+                                Nomor Ruangan
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">schedule</span>
+                                Waktu
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">menu_book</span>
+                                Matkul
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">school</span>
+                                Kelas
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">info</span>
+                                Status
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if ($result && mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $status_class = $row['status_booking'] === 'Tersedia' ? 'status-tersedia' : 'status-dipakai';
+                            echo "<tr>";
+                            echo "<td>" . date('Y-m-d', strtotime($row['tanggal'])) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['nomor_ruangan']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['jam_mulai']) . " (" . $row['jumlah_sks'] . " SKS)</td>";
+                            echo "<td>" . htmlspecialchars($row['nama_matkul']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
+                            echo "<td class='$status_class'>" . htmlspecialchars($row['status_booking']) . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data booking</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data booking</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
+                    ?>
+                </tbody>
+            </table>
+        </div>
         <div class="button-container">
             <button class="button" type="button" onclick="toggleUbahForm()">Ubah Jadwal</button>
             <button class="button" type="button" onclick="toggleHapusForm()">Hapus Jadwal</button>
@@ -614,8 +737,24 @@ if (isset($_POST['submit_hapus'])) {
             const form = document.getElementById('hapusForm');
             form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'flex' : 'none';
         }
-        // Notifikasi pop-up
+
+        // Hamburger Menu Toggle
         document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileNav = document.getElementById('mobileNav');
+
+            hamburger.addEventListener('click', function() {
+                mobileNav.classList.toggle('show');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
+                    mobileNav.classList.remove('show');
+                }
+            });
+
+            // Notifikasi pop-up
             const urlParams = new URLSearchParams(window.location.search);
             const notif = urlParams.get('notif');
             if (notif) {

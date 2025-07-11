@@ -50,9 +50,17 @@ if (isset($_POST['login'])) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - SiBookan</title>
-    <meta name="description" content="Login ke SiBookan untuk mengakses sistem booking ruangan Gedung A10" />
-    <link rel="shortcut icon" href="🏢" type="image/x-icon">
+    <title>SiBookan UNESA - Sistem Booking Ruangan Gedung A10</title>
+    <meta name="description" content="SiBookan UNESA adalah sistem booking ruangan online untuk Gedung A10 UNESA Ketintang. SiBookan membantu mahasiswa dan dosen melakukan reservasi ruangan secara cepat, efisien, dan tanpa ribet. Fitur pencarian real-time, booking 24/7, dan proses cepat." />
+    <meta name="keywords" content="sibookan, sibookan unesa, gedung a10 unesa, booking ruangan unesa, pemesanan ruangan unesa, sistem booking unesa" />
+    <meta name="author" content="SiBookan UNESA" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Indonesian" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="generator" content="SiBookan UNESA" />
+    
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="canonical" href="https://sibookan.my.id" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
@@ -68,6 +76,7 @@ if (isset($_POST['login'])) {
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #1a3464, #3668c0);
+            padding: 1rem;
         }
 
         .login-container {
@@ -77,6 +86,7 @@ if (isset($_POST['login'])) {
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
+            margin: 1rem;
         }
 
         .login-header {
@@ -86,13 +96,13 @@ if (isset($_POST['login'])) {
 
         .login-header h1 {
             color: #1e3c72;
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 4vw, 1.8rem);
             margin-bottom: 0.5rem;
         }
 
         .login-header p {
             color: #666;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
 
         .form-group {
@@ -104,6 +114,7 @@ if (isset($_POST['login'])) {
             margin-bottom: 0.5rem;
             color: #333;
             font-weight: 500;
+            font-size: clamp(0.9rem, 3vw, 1rem);
         }
 
         .form-group input {
@@ -111,7 +122,7 @@ if (isset($_POST['login'])) {
             padding: 0.8rem;
             border: 1px solid #ddd;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
             transition: border-color 0.3s ease;
         }
 
@@ -127,7 +138,7 @@ if (isset($_POST['login'])) {
             color: white;
             border: none;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: clamp(0.9rem, 3vw, 1rem);
             font-weight: 500;
             cursor: pointer;
             transition: background 0.3s ease;
@@ -142,10 +153,16 @@ if (isset($_POST['login'])) {
             margin-top: 1rem;
         }
 
+        .forgot-password p {
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
         .forgot-password a {
             color: #1e3c72;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
 
         .forgot-password a:hover {
@@ -163,6 +180,7 @@ if (isset($_POST['login'])) {
             align-items: center;
             gap: 0.5rem;
             animation: shake 0.5s ease-in-out;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
         }
 
         .error-message::before {
@@ -188,7 +206,7 @@ if (isset($_POST['login'])) {
         .back-home a {
             color: #1e3c72;
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
@@ -196,6 +214,30 @@ if (isset($_POST['login'])) {
 
         .back-home a:hover {
             text-decoration: underline;
+        }
+
+        /* Media Queries for better mobile responsiveness */
+        @media screen and (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+
+            .form-group input {
+                padding: 0.7rem;
+            }
+
+            .login-btn {
+                padding: 0.7rem;
+            }
+        }
+
+        /* Prevent zoom on input focus for iOS */
+        @media screen and (max-width: 480px) {
+            input[type="text"],
+            input[type="password"] {
+                font-size: 16px !important;
+            }
         }
     </style>
 </head>

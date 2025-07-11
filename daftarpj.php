@@ -81,12 +81,29 @@ $result = mysqli_query($db, $sql);
             font-family: "Poppins", sans-serif;
         }
 
+        html,
+        body {
+            height: 100%;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
         body {
             min-height: 100vh;
             background: linear-gradient(135deg, #1a3464, #3668c0);
             color: #333;
             display: flex;
             flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+
+        .main-content {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding-bottom: 2rem;
         }
 
         .container {
@@ -96,9 +113,10 @@ $result = mysqli_query($db, $sql);
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            margin-left: 2rem;
-            margin-right: 2rem;
+            margin-left: auto;
+            margin-right: auto;
             max-width: 1500px;
+            width: calc(100% - 4rem);
         }
 
         .container h1 {
@@ -148,6 +166,17 @@ $result = mysqli_query($db, $sql);
         .logo .material-icons {
             color: #1e3c72;
             font-size: 24px;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger .material-icons {
+            color: #1e3c72;
+            font-size: 28px;
         }
 
         .nav-buttons {
@@ -200,14 +229,13 @@ $result = mysqli_query($db, $sql);
         }
 
         footer {
+            flex-shrink: 0;
             background: #1e3c72;
             color: white;
             padding: 2rem 0;
             text-align: center;
             width: 100%;
-            position: fixed;
-            bottom: 0;
-            left: 0;
+            margin-top: auto;
         }
 
         .footer-content {
@@ -220,8 +248,13 @@ $result = mysqli_query($db, $sql);
             opacity: 0.8;
         }
 
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         table {
-            background: #ffffff;
             width: 100%;
             border-collapse: collapse;
             border-radius: 10px;
@@ -230,26 +263,73 @@ $result = mysqli_query($db, $sql);
             margin: 20px 0;
         }
 
-        table th,
-        table td {
-            padding: 12px 15px;
+        th,
+        td {
+            padding: 15px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
+            word-wrap: break-word;
         }
 
-        table th {
+        th {
             background-color: #1e3c72;
-            color: #ffffff;
+            color: white;
             font-weight: 500;
-            font-style: bold;
         }
 
-        table tr:nth-child(even) {
-            background-color: #f8f9fa;
+        .header-cell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        table tr:hover {
-            background-color: #f2f2f2;
-            transition: background-color 0.3s ease;
+        .material-icons {
+            font-size: 25px;
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Set column widths */
+        th:nth-child(1),
+        td:nth-child(1) {
+            width: 20%;
+        }
+
+        /* Nama */
+        th:nth-child(2),
+        td:nth-child(2) {
+            width: 15%;
+        }
+
+        /* NIM */
+        th:nth-child(3),
+        td:nth-child(3) {
+            width: 15%;
+        }
+
+        /* Kelas */
+        th:nth-child(4),
+        td:nth-child(4) {
+            width: 20%;
+        }
+
+        /* Matkul */
+        th:nth-child(5),
+        td:nth-child(5) {
+            width: 20%;
+        }
+
+        /* Dosen */
+        th:nth-child(6),
+        td:nth-child(6) {
+            width: 10%;
         }
 
         .button-container {
@@ -258,56 +338,121 @@ $result = mysqli_query($db, $sql);
             gap: 1rem;
             margin-top: 1rem;
         }
+
         .button {
             background-color: #2a5298;
             color: white;
             padding: 0.8rem 1.5rem;
             border-radius: 5px;
             text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-        
+
         .button:hover {
             background-color: #1e3c72;
+            transform: translateY(-2px);
         }
 
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        #pjForm {
+        /* Mobile Navigation */
+        .mobile-nav {
             display: none;
             position: fixed;
-            top: 0;
+            top: 70px;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #pjForm form {
+            right: 0;
             background: white;
-            padding: 30px;
-            border-radius: 8px;
+            padding: 1rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 500px;
-            position: relative;
+            z-index: 999;
         }
 
-        #deleteForm {
+        .mobile-nav.show {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav a {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Responsive Styles */
+        @media screen and (max-width: 1024px) {
+            .table-container {
+                width: 95%;
+                padding: 1rem;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .hamburger {
+                display: block;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .table-container {
+                width: 98%;
+                margin-top: 6rem;
+                padding: 0.8rem;
+            }
+
+            .button-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .button {
+                width: 100%;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .table-wrapper {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+
+            table {
+                min-width: 800px;
+                margin: 0;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .table-container {
+                margin-top: 12rem;
+            }
+
+            th,
+            td {
+                padding: 8px;
+                font-size: 12px;
+            }
+        }
+
+        /* Form Styles */
+        #pjForm, #deleteForm {
             display: none;
             position: fixed;
             top: 0;
@@ -320,7 +465,7 @@ $result = mysqli_query($db, $sql);
             align-items: center;
         }
 
-        #deleteForm form {
+        #pjForm form, #deleteForm form {
             background: white;
             padding: 30px;
             border-radius: 8px;
@@ -340,6 +485,31 @@ $result = mysqli_query($db, $sql);
             cursor: pointer;
             color: #666;
         }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2a5298;
+            box-shadow: 0 0 0 2px rgba(42, 82, 152, 0.1);
+        }
     </style>
 </head>
 
@@ -351,6 +521,9 @@ $result = mysqli_query($db, $sql);
                     <span class="material-icons">school</span>
                     SiBookan
                 </a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span class="material-icons">menu</span>
             </div>
             <div class="nav-buttons">
                 <a href="home.php" class="login-btn">
@@ -372,120 +545,177 @@ $result = mysqli_query($db, $sql);
             </div>
         </div>
     </header>
-    <section>
-        <div class="container">
 
-            <h1>Daftar <span style="color: #f7ad19;">PJ</span></h1>
-            <h2>Dosen: <?php echo $_SESSION["nama"]; ?></h2>
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="home.php" class="login-btn">
+            <span class="material-icons">event_available</span>
+            Booking
+        </a>
+        <a href="ruanganku.php" class="ruanganku-btn">
+            <span class="material-icons">meeting_room</span>
+            Ruanganku
+        </a>
+        <a href="daftarpj.php" class="daftarpj-btn">
+            <span class="material-icons">group</span>
+            Daftar PJ
+        </a>
+        <a href="logout.php" class="nav-btn-logout">
+            <span class="material-icons">logout</span>
+            Logout
+        </a>
+    </div>
+
+    <div class="container">
+        <h1>Daftar <span style="color: #f7ad19;">PJ</span></h1>
+        <h2>Dosen: <?php echo $_SESSION["nama"]; ?></h2>
+        <div class="table-wrapper">
             <table>
                 <thead>
                     <tr>
-                        <th>Nama</th>
-                        <th>NIM</th>
-                        <th>Password</th>
-                        <th>Kelas</th>
-                        <th>Mata Kuliah</th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">person</span>
+                                Nama
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">badge</span>
+                                NIM
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">school</span>
+                                Kelas
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">menu_book</span>
+                                Mata Kuliah
+                            </div>
+                        </th>
+                        <th>
+                            <div class="header-cell">
+                                <span class="material-icons">key</span>
+                                Password
+                            </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
-                    if (mysqli_num_rows($result) > 0) {
-                        while($row = mysqli_fetch_assoc($result)) {
+                    if ($result && mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
                             echo "<tr>";
-                            echo "<td>" . $row['nama'] . "</td>";
-                            echo "<td>" . $row['nim'] . "</td>";
-                            echo "<td>" . $row['password'] . "</td>";
-                            echo "<td>" . $row['kelas'] . "</td>";
-                            echo "<td>" . $row['matkul'] . "</td>";
+                            echo "<td>" . htmlspecialchars($row['nama']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['nim']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['matkul']) . "</td>";
+                            echo "<td>" . htmlspecialchars($row['password']) . "</td>";
                             echo "</tr>";
                         }
                     } else {
-                        echo "<tr><td colspan='4' style='text-align: center;'>Tidak ada data PJ</td></tr>";
+                        echo "<tr><td colspan='5' style='text-align: center;'>Tidak ada data penanggung jawab</td></tr>";
                     }
                     ?>
                 </tbody>
             </table>
-
-            <div class="button-container">
-                <button class="button" onclick="toggleForm()">Tambah PJ</button>
-                <button class="button" onclick="toggleDeleteForm()">Hapus PJ</button>
-            </div>
-
-            <div id="pjForm" style="display: none;">
-                <form method="POST" action="">
-                    <button type="button" class="close-btn" onclick="toggleForm()">&times;</button>
-                    <div style="margin-bottom: 15px;">
-                        <label for="nama" style="display: block; margin-bottom: 5px;">Nama:</label>
-                        <input type="text" id="nama" name="nama" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label for="nim" style="display: block; margin-bottom: 5px;">NIM:</label>
-                        <input type="text" id="nim" name="nim" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label for="password" style="display: block; margin-bottom: 5px;">Password:</label>
-                        <input type="password" id="password" name="password" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label for="kelas" style="display: block; margin-bottom: 5px;">Kelas:</label>
-                        <input type="text" id="kelas" name="kelas" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label for="matakuliah" style="display: block; margin-bottom: 5px;">Mata Kuliah:</label>
-                        <input type="text" id="matakuliah" name="matakuliah" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-
-                    <button type="submit" name="submit_pj" class="button">Submit</button>
-                </form>
-            </div>
-
-            <div id="deleteForm" style="display: none;">
-                <form method="POST" action="">
-                    <button type="button" class="close-btn" onclick="toggleDeleteForm()">&times;</button>
-                    <div style="margin-bottom: 15px;">
-                        <label for="deleteNim" style="display: block; margin-bottom: 5px;">NIM PJ yang akan dihapus:</label>
-                        <input type="text" id="deleteNim" name="deleteNim" required style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px;">
-                    </div>
-                    <button type="submit" name="delete_pj" class="button">Hapus</button>
-                </form>
-            </div>
-
-            <script>
-                function toggleForm() {
-                    const form = document.getElementById('pjForm');
-                    const deleteForm = document.getElementById('deleteForm');
-                    if (form.style.display === 'none' || form.style.display === '') {
-                        form.style.display = 'flex';
-                        deleteForm.style.display = 'none';
-                    } else {
-                        form.style.display = 'none';
-                    }
-                }
-
-                function toggleDeleteForm() {
-                    const deleteForm = document.getElementById('deleteForm');
-                    const form = document.getElementById('pjForm');
-                    if (deleteForm.style.display === 'none' || deleteForm.style.display === '') {
-                        deleteForm.style.display = 'flex';
-                        form.style.display = 'none';
-                    } else {
-                        deleteForm.style.display = 'none';
-                    }
-                }
-            </script>
-
         </div>
-    </section>
-    <section>
-        <footer>
-            <div class="footer-content">
-                <p>&copy; 2025 SiBookan. All rights reserved.</p>
+        <div class="button-container">
+            <button class="button" type="button" onclick="togglePJForm()">Tambah PJ</button>
+            <button class="button" type="button" onclick="toggleDeleteForm()">Hapus PJ</button>
+        </div>
+    </div>
+
+    <!-- Form Tambah PJ -->
+    <div id="pjForm">
+        <form method="POST" action="">
+            <button type="button" class="close-btn" onclick="togglePJForm()">&times;</button>
+            <div class="form-group">
+                <label for="nama">Nama:</label>
+                <input type="text" id="nama" name="nama" required>
             </div>
-        </footer>
-    </section>
+            <div class="form-group">
+                <label for="nim">NIM:</label>
+                <input type="text" id="nim" name="nim" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="kelas">Kelas:</label>
+                <input type="text" id="kelas" name="kelas" required>
+            </div>
+            <div class="form-group">
+                <label for="matakuliah">Mata Kuliah:</label>
+                <input type="text" id="matakuliah" name="matakuliah" required>
+            </div>
+            <button type="submit" name="submit_pj" class="button">Submit</button>
+        </form>
+    </div>
 
+    <!-- Form Hapus PJ -->
+    <div id="deleteForm">
+        <form method="POST" action="">
+            <button type="button" class="close-btn" onclick="toggleDeleteForm()">&times;</button>
+            <div class="form-group">
+                <label for="deleteNim">NIM PJ yang akan dihapus:</label>
+                <input type="text" id="deleteNim" name="deleteNim" required>
+            </div>
+            <button type="submit" name="delete_pj" class="button">Hapus</button>
+        </form>
+    </div>
 
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 SiBookan. All rights reserved.</p>
+        </div>
+    </footer>
 
+    <script>
+        function togglePJForm() {
+            const form = document.getElementById('pjForm');
+            const deleteForm = document.getElementById('deleteForm');
+            if (form.style.display === 'none' || form.style.display === '') {
+                form.style.display = 'flex';
+                deleteForm.style.display = 'none';
+            } else {
+                form.style.display = 'none';
+            }
+        }
+
+        function toggleDeleteForm() {
+            const deleteForm = document.getElementById('deleteForm');
+            const form = document.getElementById('pjForm');
+            if (deleteForm.style.display === 'none' || deleteForm.style.display === '') {
+                deleteForm.style.display = 'flex';
+                form.style.display = 'none';
+            } else {
+                deleteForm.style.display = 'none';
+            }
+        }
+
+        // Hamburger Menu Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileNav = document.getElementById('mobileNav');
+
+            hamburger.addEventListener('click', function() {
+                mobileNav.classList.toggle('show');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
+                    mobileNav.classList.remove('show');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

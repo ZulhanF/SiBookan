@@ -5,9 +5,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SiBookan UNESA - Sistem Booking Ruangan Gedung A10</title>
+    <meta name="description" content="SiBookan UNESA adalah sistem booking ruangan online untuk Gedung A10 UNESA Ketintang. SiBookan membantu mahasiswa dan dosen melakukan reservasi ruangan secara cepat, efisien, dan tanpa ribet. Fitur pencarian real-time, booking 24/7, dan proses cepat." />
+    <meta name="keywords" content="sibookan, sibookan unesa, gedung a10 unesa, booking ruangan unesa, pemesanan ruangan unesa, sistem booking unesa" />
+    <meta name="author" content="SiBookan UNESA" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Indonesian" />
+    <meta name="revisit-after" content="7 days" />
+    <meta name="generator" content="SiBookan UNESA" />
 
-    <link rel="icon" href="favicon.svg" type="image/svg+xml">
-    <link rel="shortcut icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="canonical" href="https://sibookan.my.id" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
@@ -22,6 +29,9 @@
             min-height: 100vh;
             background: linear-gradient(135deg, #1a3464, #3668c0);
             color: #333;
+            display: flex;
+            flex-direction: column;
+            position: relative;
         }
 
         .container {
@@ -31,9 +41,11 @@
             border-radius: 10px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            margin-left: 2rem;
-            margin-right: 2rem;
-            max-width: 1500px;
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 1200px;
+            width: 90%;
+            flex: 1 0 auto;
         }
 
         h1 {
@@ -189,8 +201,11 @@
             color: white;
             padding: 2rem 0;
             text-align: center;
-            margin-top: auto;
             width: 100%;
+            margin-top: auto;
+            flex-shrink: 0;
+            position: relative;
+            bottom: 0;
         }
 
         .footer-content {
@@ -235,6 +250,39 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .container {
+                margin: 6rem 1rem 2rem 1rem;
+                padding: 1rem;
+                flex: 1 0 auto;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            select {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .header-content {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .material-icons {
+                font-size: 20px;
+            }
+
             .hero h1 {
                 font-size: 2rem;
             }
@@ -245,6 +293,30 @@
 
             .features-grid {
                 grid-template-columns: 1fr;
+            }
+
+            /* Hide table columns on mobile */
+            table th:nth-child(3),
+            table th:nth-child(4),
+            table td:nth-child(3),
+            table td:nth-child(4) {
+                display: none;
+            }
+
+            /* Adjust table for mobile */
+            table {
+                font-size: 0.9rem;
+            }
+
+            table th,
+            table td {
+                padding: 10px;
+            }
+
+            /* Make table full width on mobile */
+            table {
+                width: 100%;
+                margin: 10px 0;
             }
         }
 

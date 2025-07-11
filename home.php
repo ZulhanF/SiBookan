@@ -8,7 +8,7 @@ $matakuliah_list = []; // Inisialisasi array kosong
 
 // Cek apakah user sudah login
 if (!isset($_SESSION["is_login"])) {
-    header("Location: login.php");
+    header("Location: /login");
     exit();
 }
 
@@ -24,7 +24,7 @@ if (isset($_POST['login'])) {
         $_SESSION["username"] = $tabel["username"];
         $_SESSION["nama"] = $tabel["nama"];
         $_SESSION["is_login"] = true;
-        header("Location: home.php");
+        header("Location: /home");
         exit();
     } else {
         $error_message = "Username atau password salah!";
@@ -105,6 +105,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
     $nomor_ruangan = mysqli_real_escape_string($db, $_POST['ruangan']);
     $id_matkul = mysqli_real_escape_string($db, $_POST['matkul']);
     $kelas = mysqli_real_escape_string($db, $_POST['kelas']);
+
+    // Validasi tanggal tidak boleh di masa lalu
+    $today = date('Y-m-d');
+    if ($tanggal < $today) {
+        header("Location: home.php?notif=invalid_date");
+        exit();
+    }
 
     // Hitung durasi berdasarkan SKS (1 SKS = 50 menit)
     $durasi = $jumlah_sks * 50;
@@ -227,6 +234,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
         .logo .material-icons {
             color: #1e3c72;
             font-size: 24px;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        .hamburger .material-icons {
+            color: #1e3c72;
+            font-size: 28px;
         }
 
         .nav-buttons {
@@ -379,7 +397,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
         .form-item label {
             font-size: 15px;
             font-weight: 500;
-            color: #1e3c72;
+            color: #f5f5f5;
         }
 
         .Booking select,
@@ -768,6 +786,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             background: #b71c1c;
             transform: translateY(-2px);
         }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        .mobile-nav.show {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-nav a {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Mobile Table Styles */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -1rem;
+            padding: 0 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        @media screen and (max-width: 768px) {
+            .hamburger {
+                display: block;
+            }
+
+            .nav-buttons {
+                display: none;
+            }
+
+            .table-container {
+                margin-top: 6rem;
+                padding: 1rem;
+            }
+
+            .table-wrapper {
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+
+            table {
+                min-width: 800px;
+                margin: 0;
+            }
+
+            .Booking {
+                margin-top: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -780,26 +872,49 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     SiBookan
                 </a>
             </div>
+            <div class="hamburger" id="hamburger">
+                <span class="material-icons">menu</span>
+            </div>
             <div class="nav-buttons">
-                <a href="home.php" class="login-btn">
+                <a href="/home" class="login-btn">
                     <span class="material-icons">event_available</span>
                     Booking
                 </a>
-                <a href="ruanganku.php" class="ruanganku-btn">
+                <a href="/ruanganku" class="ruanganku-btn">
                     <span class="material-icons">meeting_room</span>
                     Ruanganku
                 </a>
-                <a href="daftarpj.php" class="daftarpj-btn">
+                <a href="/daftarpj" class="daftarpj-btn">
                     <span class="material-icons">group</span>
                     Daftar PJ
                 </a>
-                <a href="logout.php" class="nav-btn-logout">
+                <a href="/logout" class="nav-btn-logout">
                     <span class="material-icons">logout</span>
                     Logout
                 </a>
             </div>
         </div>
     </header>
+
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <a href="/home" class="login-btn">
+            <span class="material-icons">event_available</span>
+            Booking
+        </a>
+        <a href="/ruanganku" class="ruanganku-btn">
+            <span class="material-icons">meeting_room</span>
+            Ruanganku
+        </a>
+        <a href="/daftarpj" class="daftarpj-btn">
+            <span class="material-icons">group</span>
+            Daftar PJ
+        </a>
+        <a href="/logout" class="nav-btn-logout">
+            <span class="material-icons">logout</span>
+            Logout
+        </a>
+    </div>
 
     <div class="table-container">
         <h1>Booking <span style="color: #f7ad19;">Ruangan</span></h1>
@@ -824,64 +939,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             </select>
             <button type="submit" class="button">Cek</button>
         </form>
-        <table>
-            <tr>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">calendar_month</span>
-                        Tanggal
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">meeting_room</span>
-                        Nomor Ruangan
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">schedule</span>
-                        Status
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">menu_book</span>
-                        Matkul
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">school</span>
-                        Kelas
-                    </div>
-                </th>
-                <th>
-                    <div class="header-cell">
-                        <span class="material-icons">person</span>
-                        Dosen
-                    </div>
-                </th>
-            </tr>
-            <?php
-            if ($result && mysqli_num_rows($result) > 0) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    echo "<tr>";
-                    echo "<td>" . date('Y-m-d', strtotime($row['tanggal'])) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['nomor_ruangan']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['status_booking']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['nama_matkul']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
-                    echo "<td>" . htmlspecialchars($row['nama_dosen']) . "</td>";
-                    echo "</tr>";
+        <div class="table-wrapper">
+            <table>
+                <tr>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">calendar_month</span>
+                            Tanggal
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">meeting_room</span>
+                            Nomor Ruangan
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">schedule</span>
+                            Status
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">menu_book</span>
+                            Matkul
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">school</span>
+                            Kelas
+                        </div>
+                    </th>
+                    <th>
+                        <div class="header-cell">
+                            <span class="material-icons">person</span>
+                            Dosen
+                        </div>
+                    </th>
+                </tr>
+                <?php
+                if ($result && mysqli_num_rows($result) > 0) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        echo "<tr>";
+                        echo "<td>" . date('Y-m-d', strtotime($row['tanggal'])) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nomor_ruangan']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['status_booking']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['jam_mulai']) . " -(" . htmlspecialchars($row['jumlah_sks']) . "SKS )</td>";
+                        echo "<td>" . htmlspecialchars($row['kelas']) . "</td>";
+                        echo "<td>" . htmlspecialchars($row['nama_dosen']) . "</td>";
+                        echo "</tr>";
+                    }
+                } else if ($filter_active) {
+                    echo "<tr><td colspan='6' style='text-align: center; color: #28a745; font-family: 'Poppins', sans-serif; font-weight: bold;'>Semua kelas tersedia pada jam dan tanggal tersebut</td></tr>";
+                } else {
+                    echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data booking</td></tr>";
                 }
-            } else if ($filter_active) {
-                echo "<tr><td colspan='6' style='text-align: center; color: #28a745; font-family: 'Poppins', sans-serif; font-weight: bold;'>Semua kelas tersedia pada jam dan tanggal tersebut</td></tr>";
-            } else {
-                echo "<tr><td colspan='6' style='text-align: center;'>Tidak ada data booking</td></tr>";
-            }
-            ?>
-        </table>
+                ?>
+            </table>
+        </div>
     </div>
     <div class="Booking">
         <p>Mau Booking Dimana ?</p>
@@ -889,7 +1006,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             <div class="form-grid">
                 <div class="form-item">
                     <label for="tanggal">Tanggal</label>
-                    <input type="date" id="tanggal" name="tanggal" required />
+                    <input type="date" id="tanggal" name="tanggal" min="<?= date('Y-m-d') ?>" required />
                 </div>
                 <div class="form-item">
                     <label for="jam">Jam Mulai</label>
@@ -995,6 +1112,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     message = 'Terjadi kesalahan saat booking.';
                     icon = '<span class="material-icons" style="color:#fbc02d;">warning</span>';
                     notifClass = 'error';
+                } else if (notif === 'invalid_date') {
+                    message = 'Tidak dapat booking untuk tanggal yang sudah lewat!';
+                    icon = '<span class="material-icons" style="color:#e53935;">error</span>';
+                    notifClass = 'fail';
                 }
                 notifPopup.innerHTML = icon + '<span>' + message + '</span>';
                 notifPopup.className = 'notif-popup show ' + notifClass;
@@ -1010,6 +1131,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
                     }, 500);
                 }, 3000);
             }
+
+            // Hamburger Menu Toggle
+            const hamburger = document.getElementById('hamburger');
+            const mobileNav = document.getElementById('mobileNav');
+
+            hamburger.addEventListener('click', function() {
+                mobileNav.classList.toggle('show');
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!hamburger.contains(event.target) && !mobileNav.contains(event.target)) {
+                    mobileNav.classList.remove('show');
+                }
+            });
+        });
+
+        // Set min date ke hari ini
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal').setAttribute('min', today);
         });
     </script>
 
@@ -1018,13 +1160,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submit_booking'])) {
             <p>&copy; 2025 SiBookan. All rights reserved.</p>
         </div>
     </footer>
-    <script>
-        // Set min date ke hari ini
-        document.addEventListener('DOMContentLoaded', function() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('tanggal').setAttribute('min', today);
-        });
-    </script>
 </body>
 
 </html>
