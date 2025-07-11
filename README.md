@@ -9,10 +9,10 @@
 
 ## 🎯 Overview
 <div style="display: flex; gap: 30px; flex-wrap: wrap;">
-  <!-- Replace with your own screenshots or illustrations -->
-  <img width="400" alt="home" src="https://github.com/yourusername/sibookan/assets/home_screenshot.png" />
-  <img width="400" alt="booking" src="https://github.com/yourusername/sibookan/assets/booking_screenshot.png" />
-  <img width="400" alt="responsive" src="https://github.com/yourusername/sibookan/assets/responsive_screenshot.png" />
+<img width="500"  alt="image" src="https://github.com/user-attachments/assets/3f876548-cccd-45ea-919d-ddd62c908622" />
+<img width="500"  alt="image" src="https://github.com/user-attachments/assets/1af0807a-9444-403e-8833-8ea3ab3493e8" />
+<img width="500"  alt="image" src="https://github.com/user-attachments/assets/27e3651e-382c-4481-9047-5932a7f81a1a" />
+
 </div>
 
 **SiBookan** adalah sistem booking ruangan online untuk Gedung A10 UNESA Ketintang. Platform ini memudahkan mahasiswa dan dosen dalam melakukan pemesanan ruangan secara cepat, efisien, dan transparan.
@@ -28,7 +28,9 @@
 
 ## 🚀 Live Demo
 
-> **Note:** SiBookan berjalan di lingkungan lokal (localhost/XAMPP). Untuk demo online, silakan deploy ke server pilihan Anda.
+> https://sibookan.my.id/
+> Username: ichiboy
+> Password: ichiboy
 
 ## 🛠️ Technology Stack
 
