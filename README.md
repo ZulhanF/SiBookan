@@ -9,10 +9,10 @@
 
 ## 🎯 Overview
 <div style="display: flex; gap: 30px; flex-wrap: wrap;">
-<img width="500"  alt="image" src="https://github.com/user-attachments/assets/f5dc8be8-09c5-4cac-a595-16b70cf6c542" />
-<img width="500"  alt="image" src="https://github.com/user-attachments/assets/3f876548-cccd-45ea-919d-ddd62c908622" />
-<img width="500"  alt="image" src="https://github.com/user-attachments/assets/1af0807a-9444-403e-8833-8ea3ab3493e8" />
-<img width="500"  alt="image" src="https://github.com/user-attachments/assets/27e3651e-382c-4481-9047-5932a7f81a1a" />
+<img width="400"  alt="image" src="https://github.com/user-attachments/assets/f5dc8be8-09c5-4cac-a595-16b70cf6c542" />
+<img width="400"  alt="image" src="https://github.com/user-attachments/assets/3f876548-cccd-45ea-919d-ddd62c908622" />
+<img width="400"  alt="image" src="https://github.com/user-attachments/assets/1af0807a-9444-403e-8833-8ea3ab3493e8" />
+<img width="400"  alt="image" src="https://github.com/user-attachments/assets/27e3651e-382c-4481-9047-5932a7f81a1a" />
 
 </div>
 
